@@ -1,0 +1,11 @@
+export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH="$PATH:/usr/local/go/bin"
+export PATH="$HOME/.cargo/env:$PATH"
+export PATH="$PATH:/usr/bin"
+export PATH="$PATH:$HOME/.local/bin"
+export PNPM_HOME="$HOME/.local/share/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+export NEOVIDE_MULTIGRID=true
+export NVM_DIR="$HOME/.nvm"
+source ~/.nvm/nvm.sh
+. "$HOME/.cargo/env"

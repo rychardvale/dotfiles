@@ -3,14 +3,16 @@
 DIR="$HOME/.config"
 
 rofi \
-	-show run \
+	-show combi \
 	-modi run,drun,ssh \
+    -run-command "i3-msg exec '{cmd}'" \
+    -show-icons \
 	-no-lazy-grab \
 	-scroll-method 0 \
 	-drun-match-fields all \
 	-drun-display-format "{name}" \
 	-no-drun-show-actions \
 	-terminal kitty \
-	-kb-cancel Escape \
+	-kb-cancel Ctrl+c \
 	-theme "$DIR"/rofi/themes/launcher.rasi
 

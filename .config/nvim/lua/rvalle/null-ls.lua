@@ -13,14 +13,6 @@ null_ls.setup({
             filetypes = { "c", "cpp" },
         }),
         formatting.prismaFmt,
-        formatting.prettier.with({
-            extra_args = {
-                "--print-width=80",
-                "--trailling-comma=es5",
-                "--single-quote=false",
-                "--tab-width=4",
-                "--use-tabs=true",
-            },
-        }),
+        formatting.prettier,
     },
 })

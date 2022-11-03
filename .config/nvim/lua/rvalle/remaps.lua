@@ -14,8 +14,9 @@ vnoremap("<M-j>", ":m '>+1<CR>gv=gv")
 vnoremap("<M-k>", ":m '<-2<CR>gv=gv")
 nnoremap("<M-k>", ":m .-2<CR>==") -- move line up
 nnoremap("<leader>h", ":nohlsearch<CR>") -- removes highlight
-nnoremap("<leader>;", ":Alpha<CR>")
-nnoremap("<leader>pv", ":Ex<CR><CR>")
+
+-- luatree, sue me
+nnoremap("<leader>pv", ":NvimTreeToggle<CR>")
 
 -- debugger
 nnoremap("<F5>", ":lua require'dap'.toggle_breakpoint()<CR>")

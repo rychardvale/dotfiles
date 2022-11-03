@@ -25,7 +25,9 @@ opt.background = "dark"
 opt.showmode = false
 opt.showcmd = false
 opt.scrolloff = 6
-g.netrw_bufsettings = "noma numod nu nobl nowrap ro"
+
+g.loaded_netrw = 1
+g.loaded_netrwPlugin = 1
 
 g.neovide_cursor_antialiasing = true
 g.neovide_transparency = 0.95

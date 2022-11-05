@@ -17,6 +17,7 @@ nnoremap("<leader>h", ":nohlsearch<CR>") -- removes highlight
 
 -- luatree, sue me
 nnoremap("<leader>pv", ":NvimTreeToggle<CR>")
+nnoremap("<leader>e", ":NvimTreeToggle<CR>")
 
 -- debugger
 nnoremap("<F5>", ":lua require'dap'.toggle_breakpoint()<CR>")

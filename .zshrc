@@ -10,8 +10,8 @@ trash() {
     [[ -n "$*" ]] && echo "$t" && mv "$@" "$t" ;
 }
 # Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
 
+export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
 plugins=(
@@ -22,7 +22,13 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
+
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+alias pbcopy='xclip -selection clipboard'
+alias pbpaste='xclip -selection clipboard -o'
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm

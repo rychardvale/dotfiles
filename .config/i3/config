@@ -26,7 +26,7 @@ exec "xrandr --output DP-0 --mode 1920x1080 --rate 144"
 exec "xset r rate 200 25"
 
 # i3 BG
-exec --no-startup-id feh --bg-fill ~/Pictures/i3bg3.jpg
+exec --no-startup-id feh --bg-fill ~/Pictures/i3bg4.jpg
 
 # Picom with blur
 exec "picom -b --experimental-backends"
@@ -70,37 +70,37 @@ bindsym $mod+Shift+q kill
 # A more modern dmenu replacement is rofi:
 bindsym $mod+d exec --no-startup-id "~/.config/rofi/bin/launcher"
 bindsym $mod+Shift+d exec --no-startup-id "~/.config/rofi/bin/drun"
-bindsym $mod+i exec "~/.config/rofi/bin/window"
+# bindsym $mod+i exec "~/.config/rofi/bin/window"
 # There also is i3-dmenu-desktop which only displays applications shipping a
 # .desktop file. It is a wrapper around dmenu, so you need that installed.
 # bindcode $mod+40 exec --no-startup-id i3-dmenu-desktop
 
 # change focus
-bindsym $mod+j focus left
-bindsym $mod+k focus down
-bindsym $mod+l focus up
-bindsym $mod+semicolon focus right
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
 
 # alternatively, you can use the cursor keys:
-bindsym $mod+Left focus left
-bindsym $mod+Down focus down
-bindsym $mod+Up focus up
-bindsym $mod+Right focus right
+# bindsym $mod+Left focus left
+# bindsym $mod+Down focus down
+# bindsym $mod+Up focus up
+# bindsym $mod+Right focus right
 
 # move focused window
-bindsym $mod+Shift+j move left
-bindsym $mod+Shift+k move down
-bindsym $mod+Shift+l move up
-bindsym $mod+Shift+semicolon move right
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
 
 # alternatively, you can use the cursor keys:
-bindsym $mod+Shift+Left move left
-bindsym $mod+Shift+Down move down
-bindsym $mod+Shift+Up move up
-bindsym $mod+Shift+Right move right
+# bindsym $mod+Shift+Left move left
+# bindsym $mod+Shift+Down move down
+# bindsym $mod+Shift+Up move up
+# bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
-bindsym $mod+h split h
+bindsym $mod+b split h
 
 # split in vertical orientation
 bindsym $mod+v split v
@@ -208,6 +208,7 @@ bindsym $mod+r mode "resize"
 for_window [class=".*"] border pixel 1 #*
 gaps inner 10
 gaps outer 1
+focus_wrapping no
 
 smart_borders on
 smart_borders no_gaps

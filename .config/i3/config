@@ -19,13 +19,13 @@ font pango:monospace 8
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 #font pango:DejaVu Sans Mono 8
 # Sets display to 1920x1080 and 144hz
-exec "xrandr --output eDP-1 --mode 1920x1080 --rate 144"
+exec "xrandr --output DP-0 --mode 1920x1080 --rate 144"
 
 # Keyboard repeat rate
 exec "xset r rate 200 25"
 
 # i3 BG
-exec --no-startup-id feh --bg-fill ~/Pictures/bg.jpg
+exec --no-startup-id feh --bg-fill ~/bg/bg6.jpg
 
 # Picom with blur
 exec "picom -b --experimental-backends --config ~/.config/picom.conf"

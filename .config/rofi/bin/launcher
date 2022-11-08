@@ -3,10 +3,9 @@
 DIR="$HOME/.config"
 
 rofi \
-	-show combi \
+	-show run \
 	-modi run,drun,ssh \
     -run-command "i3-msg exec '{cmd}'" \
-    -show-icons \
 	-no-lazy-grab \
 	-scroll-method 0 \
 	-drun-match-fields all \

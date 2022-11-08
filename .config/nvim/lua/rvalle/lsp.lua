@@ -41,27 +41,6 @@ local function config(_config)
             nnoremap("K", function()
                 vim.lsp.buf.hover()
             end)
-
-            --[[
-            local group_exists, _ = pcall(vim.api.nvim_get_autocmds, { group = "lsp_highlight" })
-            if not group_exists then
-                vim.api.nvim_create_augroup("lsp_highlight", {})
-            end
-            if client.supports_method("textDocument/documentHighlight") then
-                vim.api.nvim_clear_autocmds({ group = "lsp_highlight", buffer = bufnr })
-                vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-                    callback = vim.lsp.buf.document_highlight,
-                    group = "lsp_highlight",
-                    buffer = bufnr,
-                    desc = "Highlight on variable hover",
-                })
-                vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-                    callback = vim.lsp.buf.clear_references,
-                    group = "lsp_highlight",
-                    buffer = bufnr,
-                    desc = "Remove highlight from variable on move",
-                })
-            end]]
         end,
     }, _config or {})
 end
@@ -81,6 +60,8 @@ lspconfig.rust_analyzer.setup(config())
 lspconfig.gopls.setup(config())
 lspconfig.prismals.setup(config())
 
+
+-- Workaround clang utf warning
 local caps = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 caps.offsetEncoding = { "utf-16" }
 lspconfig.clangd.setup(config({

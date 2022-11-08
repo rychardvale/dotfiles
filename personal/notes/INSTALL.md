@@ -4,13 +4,15 @@
 
 -  Fedora
 ```shell
-sudo dnf install zsh
-sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+sudo dnf install zsh &&
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" &&
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 ```
 -  Ubuntu
 ```bash
 sudo apt-get install zsh curl
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 ```
 
 - Coloca como default zsh
@@ -33,7 +35,7 @@ Copia a paradinha e cola no github
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 echo ".dotfiles" >> .gitignore
 git clone --bare git@github.com:rychardvale/.dotfiles.git $HOME/.dotfiles
-dotfiles checkout
+dotfiles checkout -f
 ```
 
 > Se acontecer erro de untracked, move tudo pra .dotfiles-backup e roda checkout dnv
@@ -45,6 +47,13 @@ dotfiles checkout
 dotfiles config --local status.showUntrackedFiles no
 ```
 ---
+
+## Install JetBrains Font
+[Nerd fonts](https://www.nerdfonts.com/font-downloads)
+```bash
+mkdir -p ~/.fonts 
+```
+unzip fonts e move para ~/.fonts
 
 ## Install kitty
 
@@ -74,13 +83,13 @@ installa tree-sitter-cli
 cargo install tree-sitter-cli
 ```
 ## Install Neovim
+[Neovim repo](https://github.com/neovim/neovim/releases/nightly)
 
 #### Install packer
 ```bash
 git clone --depth 1 https://github.com/wbthomason/packer.nvim\
  ~/.local/share/nvim/site/pack/packer/start/packer.nvim
 ```
-[Neovim repo](https://github.com/neovim/neovim/releases/nightly)
 
 #### Install build-essentials
 ```bash
@@ -91,4 +100,11 @@ sudo apt-get install build-essentials # ubuntu
 #### Install ripgrep for telescope
 ```bash
 sudo dnf install ripgrep
+```
+
+## Ricing
+
+#### Install stuff
+```bash
+sudo dnf install polybar rofi xset xrandr feh
 ```

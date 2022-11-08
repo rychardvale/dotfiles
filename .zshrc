@@ -27,6 +27,7 @@ alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+alias l1='ls -A1'
 alias pbcopy='xclip -selection clipboard'
 alias pbpaste='xclip -selection clipboard -o'
 

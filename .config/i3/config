@@ -28,7 +28,7 @@ exec "xset r rate 200 25"
 exec --no-startup-id feh --bg-fill ~/Pictures/bg.jpg
 
 # Picom with blur
-exec "picom -b --experimental-backends"
+exec "picom -b --experimental-backends --config ~/.config/picom.conf"
 
 # polybar setup
 exec "~/.config/bar/launch.sh"
@@ -204,8 +204,8 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-for_window [class=".*"] border pixel 1 #*
-gaps inner 10
+for_window [class=".*"] border pixel 1 
+gaps inner 7
 gaps outer 1
 focus_wrapping no
 

@@ -1,6 +1,8 @@
 require("rvalle.plugins")
 require("rvalle.remaps")
 require("rvalle.options")
+Utils = require("rvalle.utils")
+vim.cmd([[command! -nargs=1 ChangeColorscheme lua Utils.change_colorscheme(<f-args>)]])
 
 require("rvalle.themes")
 require("rvalle.treesitter")

@@ -9,7 +9,7 @@ null_ls.setup({
     debug = true,
     sources = {
         formatting.stylua,
-        formatting.uncrustify.with({
+        formatting.clang_format.with({
             filetypes = { "c", "cpp" },
         }),
         formatting.prismaFmt,

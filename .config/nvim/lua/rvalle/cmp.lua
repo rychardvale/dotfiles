@@ -48,14 +48,14 @@ cmp.setup({
         end, { "i", "s" }),
     }),
     sources = cmp.config.sources({
-        { name = "gh_issues", keyword_length = 3 },
+        { name = "gh_issues" },
         { name = "nvim_lsp_signature_help" },
-        { name = "nvim_lsp", keyword_length = 3 },
-        { name = "nvim_lua", keyword_length = 3 },
+        { name = "nvim_lsp" },
+        { name = "nvim_lua" },
         { name = "path" },
-        { name = "luasnip", keyword_length = 3 },
+        { name = "luasnip" },
     }, {
-        { name = "buffer", keyword_length = 3 },
+        { name = "buffer" },
     }),
 })
 

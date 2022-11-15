@@ -1,8 +1,8 @@
 local M = {}
 M.change_colorscheme = function(color)
     if color == "light" then
-        vim.g.ayucolor = "light"
-        vim.cmd([[colorscheme ayu]])
+        vim.o.background = "light"
+        vim.cmd([[colorscheme one-nvim]])
         return
     end
 

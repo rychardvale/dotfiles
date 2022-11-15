@@ -1,8 +1,4 @@
 local nnoremap = require("rvalle.keymap").nnoremap
-local ok, lspconfig = pcall(require, "lspconfig")
-if not ok then
-    return
-end
 
 local okmason, masonlsp = pcall(require, "mason-lspconfig")
 if not okmason then
@@ -11,11 +7,16 @@ end
 
 masonlsp.setup()
 
+local ok, lspconfig = pcall(require, "lspconfig")
+if not ok then
+    return
+end
+
 vim.diagnostic.config({
     virtual_text = true,
     signs = true,
     underline = true,
-    update_in_insert = false,
+    update_in_insert = true,
     severity_sort = true,
 })
 
@@ -28,7 +29,7 @@ end
 local function config(_config)
     return vim.tbl_deep_extend("force", {
         capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()),
-        on_attach = function(client, bufnr)
+        on_attach = function()
             nnoremap("<leader>lk", "<cmd>lua vim.diagnostic.goto_prev()<CR>")
             nnoremap("<leader>lj", "<cmd>lua vim.diagnostic.goto_next()<CR>")
             nnoremap("gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
@@ -59,11 +60,4 @@ lspconfig.tsserver.setup(config())
 lspconfig.rust_analyzer.setup(config())
 lspconfig.gopls.setup(config())
 lspconfig.prismals.setup(config())
-
-
--- Workaround clang utf warning
-local caps = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
-caps.offsetEncoding = { "utf-16" }
-lspconfig.clangd.setup(config({
-    capabilities = caps,
-}))
+lspconfig.clangd.setup(config())

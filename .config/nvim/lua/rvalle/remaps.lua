@@ -14,6 +14,10 @@ vnoremap("<M-j>", ":m '>+1<CR>gv=gv")
 vnoremap("<M-k>", ":m '<-2<CR>gv=gv")
 nnoremap("<M-k>", ":m .-2<CR>==") -- move line up
 nnoremap("<leader>h", ":nohlsearch<CR>") -- removes highlight
+nnoremap("<C-u>", "<C-u>zz")
+nnoremap("<C-d>", "<C-d>zz")
+nnoremap("n", "nzz")
+nnoremap("N", "Nzz")
 
 -- luatree, sue me
 nnoremap("<leader>pv", ":NvimTreeToggle<CR>")

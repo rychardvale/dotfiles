@@ -16,7 +16,7 @@ vim.diagnostic.config({
     virtual_text = true,
     signs = true,
     underline = true,
-    update_in_insert = true,
+    update_in_insert = false,
     severity_sort = true,
 })
 
@@ -43,6 +43,7 @@ local function config(_config)
                 vim.lsp.buf.hover()
             end)
         end,
+        flags = { debounce_text_changes = 150 },
     }, _config or {})
 end
 

@@ -1,3 +1,8 @@
 require("rvalle.themes.catpuccin")
 require("rvalle.themes.tokyo")
-vim.cmd([[colorscheme tokyonight-night]])
+
+local default_scheme = "tokyonight-night"
+local status, _ = pcall(vim.cmd, "colorscheme " .. default_scheme)
+if not status then
+    return
+end

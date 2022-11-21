@@ -3,7 +3,8 @@ if not ok then
 	return
 end
 
-colorizer.setup({ "*" }, {
+colorizer.setup({
+	filetypes = { "*" },
 	RGB = true, -- #RGB hex codes
 	RRGGBB = true, -- #RRGGBB hex codes
 	names = false, -- "Name" codes like Blue

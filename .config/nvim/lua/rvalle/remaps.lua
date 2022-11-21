@@ -20,7 +20,7 @@ nnoremap("n", "nzz")
 nnoremap("N", "Nzz")
 
 -- luatree, sue me
-nnoremap("<leader>pv", ":NvimTreeToggle<CR>")
+nnoremap("<leader>pv", ":Ex<CR>")
 nnoremap("<leader>e", ":NvimTreeToggle<CR>")
 
 -- debugger

@@ -19,15 +19,13 @@ nnoremap("<C-d>", "<C-d>zz")
 nnoremap("n", "nzz")
 nnoremap("N", "Nzz")
 
--- luatree, sue me
 nnoremap("<leader>pv", ":Ex<CR>")
-nnoremap("<leader>e", ":NvimTreeToggle<CR>")
 
 -- debugger
 nnoremap("<F5>", ":lua require'dap'.toggle_breakpoint()<CR>")
-nnoremap("<F9>", ":lua require'dap'.continue()<CR>")
+nnoremap("<F8>", ":lua require'dap'.continue()<CR>")
+nnoremap("<F9>", ":lua require'dap'.step_into()<CR>")
 nnoremap("<F10>", ":lua require'dap'.step_over()<CR>")
-nnoremap("<F11>", ":lua require'dap'.step_into()<CR>")
 nnoremap("<F11>", ":lua require'dap'.step_out()<CR>")
 nnoremap("<leader>db", ":lua require'dapui'.toggle()<CR>")
 
@@ -54,6 +52,7 @@ nnoremap("<leader>lg", ":Telescope live_grep<CR>")
 nnoremap("<leader>sr", ":Telescope oldfiles<CR>")
 nnoremap("<leader>P", ":Telescope projects<CR>")
 nnoremap("<leader>D", ":Telescope diagnostics<CR>")
+nnoremap("<leader>e", ":Telescope file_browser<CR>")
 
 -- Harpoon
 nnoremap("<leader>a", "<cmd>lua require('harpoon.mark').add_file()<CR>")

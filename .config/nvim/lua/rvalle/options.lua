@@ -1,18 +1,21 @@
-local g = vim.g
 local opt = vim.opt
+local g = vim.g
 
-opt.nu = true
+-- opt.nu = true
 opt.number = true
 opt.relativenumber = true
 
-opt.expandtab = true
+opt.expandtab = false
 opt.tabstop = 4
 opt.shiftwidth = 4
-opt.smartindent = false
+opt.smartindent = true
 opt.ignorecase = true
-opt.smarttab = false
+opt.smarttab = true
 opt.clipboard = "unnamedplus"
 opt.guifont = { "JetBrainsMono Nerd Font:h11" }
+opt.signcolumn = "yes"
+opt.splitbelow = true
+opt.splitright = true
 
 opt.laststatus = 2
 opt.showtabline = 2
@@ -23,16 +26,10 @@ opt.termguicolors = true
 opt.background = "dark"
 opt.showmode = false
 opt.showcmd = false
-opt.scrolloff = 6
-opt.updatetime = 200
+opt.scrolloff = 4
+opt.sidescrolloff = 4
+opt.swapfile = false
 
---[[ g.loaded_netrw = 1
-g.loaded_netrwPlugin = 1 ]]
-
---[[ g.neovide_cursor_antialiasing = true
-g.neovide_transparency = 0.95
-g.neovide_no_idle = true
-g.neovide_cursor_animation_length = 0.13
-g.neovide_cursor_vfx_particle_density = 10.0
-g.neovide_hide_mouse_when_typing = true
-g.neovide_confirm_quit = true ]]
+g.mkdp_preview_options = {
+	disable_sync_scroll = 1
+}

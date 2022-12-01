@@ -19,6 +19,6 @@ bufferline.setup({
 	options = {
 		diagnostics = "nvim_lsp",
 		diagnostics_indicator = diagnostics_indicator,
-		diagnostics_update_in_insert = false,
+		diagnostics_update_in_insert = true,
 	},
 })

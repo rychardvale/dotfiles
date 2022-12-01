@@ -4,15 +4,25 @@ return require("packer").startup(function(use)
 	use("wbthomason/packer.nvim")
 	use("nvim-lua/plenary.nvim")
 	use("nvim-treesitter/nvim-treesitter")
-	-- use("nvim-treesitter/nvim-treesitter-textobjects")
+	use({
+		"nvim-treesitter/nvim-treesitter-context",
+		config = function()
+			require("treesitter-context").setup()
+		end,
+	})
 	use("nvim-telescope/telescope.nvim")
+	use("nvim-telescope/telescope-project.nvim")
+	use("nvim-telescope/telescope-file-browser.nvim")
+
+
 	use("NvChad/nvim-colorizer.lua")
 
 	-- themes
 	use("folke/tokyonight.nvim")
-	use("morhetz/gruvbox")
-	use("Th3Whit3Wolf/one-nvim")
-	use("ayu-theme/ayu-vim")
+	use({ "catppuccin/nvim", as = "catppuccin" })
+	-- use("morhetz/gruvbox")
+	-- use("Th3Whit3Wolf/one-nvim")
+	-- use("ayu-theme/ayu-vim")
 
 	use("neovim/nvim-lspconfig")
 	use("onsails/lspkind.nvim")
@@ -23,7 +33,17 @@ return require("packer").startup(function(use)
 		end,
 	})
 
+	use("SmiteshP/nvim-navic")
+	use("fgheng/winbar.nvim")
+	use({
+		"rmagatti/goto-preview",
+		config = function()
+			require("goto-preview").setup()
+		end,
+	})
+
 	use("lukas-reineke/indent-blankline.nvim")
+	use("kyazdani42/nvim-web-devicons")
 
 	-- status line
 	use({
@@ -38,16 +58,10 @@ return require("packer").startup(function(use)
 	})
 	use("williamboman/mason-lspconfig.nvim")
 
-	--[[ use({
-		"nvim-tree/nvim-tree.lua",
-		requires = { "kyazdani42/nvim-web-devicons" },
-	}) ]]
-
 	use({
 		"iamcco/markdown-preview.nvim",
 		run = "cd app && npm install",
-		setup = function()
-		end,
+		setup = function() end,
 		ft = { "markdown" },
 	})
 
@@ -58,6 +72,11 @@ return require("packer").startup(function(use)
 	use("hrsh7th/cmp-nvim-lua")
 	use("hrsh7th/cmp-nvim-lsp")
 	use("hrsh7th/cmp-cmdline")
+
+	-- debugers
+	use("mfussenegger/nvim-dap")
+	use("rcarriga/nvim-dap-ui")
+	use("jayp0521/mason-nvim-dap.nvim")
 
 	--snippets
 	use("L3MON4D3/LuaSnip")
@@ -76,7 +95,7 @@ return require("packer").startup(function(use)
 		requires = "kyazdani42/nvim-web-devicons",
 	})
 	use("ahmedkhalf/project.nvim")
-	use("nvim-telescope/telescope-project.nvim")
+	use("glepnir/lspsaga.nvim")
 
 	use("numToStr/Comment.nvim")
 	use({

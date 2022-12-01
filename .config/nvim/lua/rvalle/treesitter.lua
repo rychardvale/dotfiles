@@ -22,7 +22,6 @@ treesitter.setup({
         "tsx",
         "bash",
     },
-    sync_install = true,
     autotag = {
         enable = true,
     },

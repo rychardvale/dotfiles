@@ -40,7 +40,7 @@ cat.setup({
 		},
 		TelescopeBorder = {
 			bg = "NONE",
-			fg = "none",
+			fg = "NONE",
 		},
 		TelescopePromptTitle = {
 			bg = "NONE",

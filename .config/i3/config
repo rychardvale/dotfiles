@@ -107,6 +107,8 @@ bindsym $mod+v split v
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
 
+bindsym $mod+Ctrl+l exec "i3lock-fancy"
+
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
 bindsym $mod+w layout tabbed
@@ -204,7 +206,7 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-for_window [class=".*"] border pixel 1 
+for_window [class=".*"] border pixel 0 
 gaps inner 7
 gaps outer 1
 focus_wrapping no

@@ -30,6 +30,8 @@ alias l='ls -CF'
 alias l1='ls -A1'
 alias pbcopy='xclip -selection clipboard'
 alias pbpaste='xclip -selection clipboard -o'
+alias wificonnect='sudo nmcli --ask dev wifi connect'
+alias wifilist='nmcli dev wifi list'
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm

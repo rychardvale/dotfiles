@@ -15,6 +15,7 @@ null_ls.setup({
         }),
         formatting.prismaFmt,
         formatting.prettier,
+        formatting.rustfmt,
         diagnostics.eslint,
     },
 })

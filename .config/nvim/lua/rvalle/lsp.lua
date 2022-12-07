@@ -50,7 +50,7 @@ vim.diagnostic.config({
 	virtual_text = true,
 	signs = true,
 	underline = true,
-	update_in_insert = false,
+	update_in_insert = true,
 	severity_sort = true,
 	float = { source = "always" },
 })
@@ -61,6 +61,38 @@ for type, icon in pairs(signs) do
 	vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
 
+require("lsp-inlayhints").setup({
+	inlay_hints = {
+		parameter_hints = {
+			show = false,
+			-- prefix = "<- ",
+			separator = ", ",
+		},
+		type_hints = {
+			-- type and other hints
+			show = true,
+			prefix = "",
+			separator = ", ",
+			remove_colon_end = false,
+			remove_colon_start = false,
+		},
+		-- separator between types and parameter hints. Note that type hints are
+		-- shown before parameter
+		labels_separator = "  ",
+		-- whether to align to the length of the longest line in the file
+		max_len_align = false,
+		-- padding from the left if max_len_align is true
+		max_len_align_padding = 1,
+		-- whether to align to the extreme right or not
+		right_align = false,
+		-- padding from the right if right_align is true
+		right_align_padding = 7,
+		-- highlight group
+		highlight = "Comment",
+	},
+	debug_mode = false,
+})
+
 local function config(_config)
 	return vim.tbl_deep_extend("force", {
 		capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()),
@@ -68,10 +100,14 @@ local function config(_config)
 			if client.server_capabilities.documentSymbolProvider then
 				navic.attach(client, bufnr)
 			end
+			require("lsp-inlayhints").on_attach(client, bufnr)
 			nnoremap("gD", "<cmd>lua vim.lsp.buf.declaration()<CR>")
 			nnoremap("gi", "<cmd>lua vim.lsp.buf.implementation()<CR>")
 			inoremap("<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>")
 		end,
+		flags = {
+			debounce_text_changes = 10,
+		},
 	}, _config or {})
 end
 
@@ -85,9 +121,42 @@ lspconfig.sumneko_lua.setup(config({
 		},
 	},
 }))
-lspconfig.tsserver.setup(config())
-lspconfig.rust_analyzer.setup(config())
+lspconfig.tsserver.setup({
+	settings = {
+		typescript = {
+			inlayHints = {
+				includeInlayParameterNameHints = "all",
+				includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+				includeInlayFunctionParameterTypeHints = true,
+				includeInlayVariableTypeHints = true,
+				includeInlayPropertyDeclarationTypeHints = true,
+				includeInlayFunctionLikeReturnTypeHints = true,
+				includeInlayEnumMemberValueHints = true,
+			},
+		},
+		javascript = {
+			inlayHints = {
+				includeInlayParameterNameHints = "all",
+				includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+				includeInlayFunctionParameterTypeHints = true,
+				includeInlayVariableTypeHints = true,
+				includeInlayPropertyDeclarationTypeHints = true,
+				includeInlayFunctionLikeReturnTypeHints = true,
+				includeInlayEnumMemberValueHints = true,
+			},
+		},
+	},
+})
+lspconfig.rust_analyzer.setup(config({
+	settings = {
+		rust = {
+			unstable_features = true,
+			build_on_save = false,
+			all_features = true,
+		},
+	},
+}))
 lspconfig.gopls.setup(config())
 lspconfig.prismals.setup(config())
 lspconfig.clangd.setup(config())
-lspconfig.marksman.setup(config()) -- temp: Java
+lspconfig.marksman.setup(config())

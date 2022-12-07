@@ -37,10 +37,6 @@ cmp.setup({
 			},
 		}),
 	},
-	--[[ window = {
-		completion = cmp.config.window.bordered(),
-		documentation = cmp.config.window.bordered(),
-	}, ]]
 	snippet = {
 		expand = function(args)
 			require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
@@ -71,12 +67,12 @@ cmp.setup({
 		end, { "i", "s" }),
 	}),
 	sources = cmp.config.sources({
-		{ name = "gh_issues", keyword_length = 3 },
-		{ name = "nvim_lsp_signature_help", keyword_length = 3 },
-		{ name = "nvim_lsp", keyword_length = 3 },
-		{ name = "nvim_lua", keyword_length = 3 },
-		{ name = "path", keyword_length = 3 },
-		{ name = "luasnip", keyword_length = 3 },
+		{ name = "nvim_lsp_signature_help" },
+		{ name = "nvim_lsp", keyword_length = 2 },
+		{ name = "luasnip" },
+		{ name = "nvim_lua" },
+		{ name = "path" },
+		{ name = "gh_issues" },
 	}, {
 		{ name = "buffer" },
 	}),

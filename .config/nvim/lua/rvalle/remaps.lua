@@ -7,11 +7,11 @@ vim.g.mapleader = " "
 
 -- Utils
 nnoremap("<C-s>", ":w<CR>")
-nnoremap("<M-j>", ":m .+1<CR>==") -- move line down
 inoremap("<M-j>", "<ESC>:m .+1<CR>==gi") -- move line down
 inoremap("<M-k>", "<ESC>:m .-2<CR>==gi") -- move line up
-vnoremap("<M-j>", ":m '>+1<CR>gv=gv")
-vnoremap("<M-k>", ":m '<-2<CR>gv=gv")
+vnoremap("<M-j>", ":m '>+1<CR>gv=gv") -- move down but visual
+vnoremap("<M-k>", ":m '<-2<CR>gv=gv") -- move up but visual
+nnoremap("<M-j>", ":m .+1<CR>==") -- move line down
 nnoremap("<M-k>", ":m .-2<CR>==") -- move line up
 nnoremap("<leader>h", ":nohlsearch<CR>") -- removes highlight
 nnoremap("<C-u>", "<C-u>zz")
@@ -19,7 +19,8 @@ nnoremap("<C-d>", "<C-d>zz")
 nnoremap("n", "nzz")
 nnoremap("N", "Nzz")
 
-nnoremap("<leader>pv", ":Ex<CR>")
+-- nnoremap("<leader>pv", ":Ex<CR>")
+nnoremap("<leader>pv", ":Telescope file_browser path=%:p:h<CR>")
 
 -- debugger
 nnoremap("<F5>", ":lua require'dap'.toggle_breakpoint()<CR>")
@@ -31,17 +32,17 @@ nnoremap("<leader>db", ":lua require'dapui'.toggle()<CR>")
 
 -- buffer stuff
 nnoremap("<leader>c", function() -- closes current buffer
-    local bufnr = vim.api.nvim_get_current_buf()
-    if bufnr == 0 then
-        return
-    end
-    vim.cmd(string.format("%s %d", "bdelete!", bufnr))
+	local bufnr = vim.api.nvim_get_current_buf()
+	if bufnr == 0 then
+		return
+	end
+	vim.cmd(string.format("%s %d", "bdelete!", bufnr))
 end) -- closes buffer
 nnoremap("<leader>bj", ":BufferLinePick<CR>") -- pick buffer
 nnoremap("<leader>b[", ":BufferLineCloseLeft<CR>")
 nnoremap("<leader>b]", ":BufferLineCloseRight<CR>")
 nnoremap("<leader>f", function()
-    vim.lsp.buf.format({ async = true })
+	vim.lsp.buf.format({ async = true })
 end)
 nnoremap("<leader>bl", ":BufferLineMoveNext<CR>")
 nnoremap("<leader>bh", ":BufferLineMovePrev<CR>")

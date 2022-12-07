@@ -5,29 +5,10 @@ if not ok then
 end
 
 treesitter.setup({
-    ensure_installed = {
-        "c",
-        "lua",
-        "prisma",
-        "go",
-        "javascript",
-        "typescript",
-        "dockerfile",
-        "dot",
-        "comment",
-        "html",
-        "json",
-        "gitignore",
-        "vim",
-        "tsx",
-        "bash",
-    },
-    autotag = {
-        enable = true,
-    },
+    ensure_installed = "all",
     highlight = {
-        matchup = {
-            enable = true,
+		enable = true,
+        --[[ matchup = { enable = true,
         },
         context_commentstring = {
             enable = true,
@@ -42,7 +23,6 @@ treesitter.setup({
                 vue = "<!-- %s -->",
                 json = "",
             },
-        },
-        enable = true,
+        }, ]]
     },
 })

@@ -20,6 +20,11 @@ opt.splitright = true
 opt.laststatus = 2
 opt.showtabline = 2
 
+opt.foldenable=false
+opt.foldmethod="expr"
+opt.foldexpr = "nvim_treesitter#foldexpr()"
+opt.foldlevel = 99
+
 opt.cursorline = true
 
 opt.termguicolors = true
@@ -31,5 +36,5 @@ opt.sidescrolloff = 4
 opt.swapfile = false
 
 g.mkdp_preview_options = {
-	disable_sync_scroll = 1
+	disable_sync_scroll = 1,
 }

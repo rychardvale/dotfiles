@@ -3,7 +3,10 @@ vim.cmd([[ packadd packer.nvim ]])
 return require("packer").startup(function(use)
 	use("wbthomason/packer.nvim")
 	use("nvim-lua/plenary.nvim")
-	use("nvim-treesitter/nvim-treesitter")
+	use({
+		"nvim-treesitter/nvim-treesitter",
+		run = ":TSUpdate",
+	})
 	use({
 		"nvim-treesitter/nvim-treesitter-context",
 		config = function()
@@ -14,15 +17,11 @@ return require("packer").startup(function(use)
 	use("nvim-telescope/telescope-project.nvim")
 	use("nvim-telescope/telescope-file-browser.nvim")
 
-
 	use("NvChad/nvim-colorizer.lua")
 
 	-- themes
 	use("folke/tokyonight.nvim")
 	use({ "catppuccin/nvim", as = "catppuccin" })
-	-- use("morhetz/gruvbox")
-	-- use("Th3Whit3Wolf/one-nvim")
-	-- use("ayu-theme/ayu-vim")
 
 	use("neovim/nvim-lspconfig")
 	use("onsails/lspkind.nvim")
@@ -32,6 +31,7 @@ return require("packer").startup(function(use)
 			require("trouble").setup()
 		end,
 	})
+	use("lvimuser/lsp-inlayhints.nvim")
 
 	use("SmiteshP/nvim-navic")
 	use("fgheng/winbar.nvim")

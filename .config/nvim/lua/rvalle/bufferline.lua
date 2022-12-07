@@ -3,16 +3,9 @@ if not ok then
     return print("could not find bufferline")
 end
 
-local function diagnostics_indicator(_, _, diagnostics, _)
-	local result = {}
-	local symbols = { error = "", warning = "", info = "" }
-	for name, count in pairs(diagnostics) do
-		if symbols[name] and count > 0 then
-			table.insert(result, symbols[name] .. " " .. count)
-		end
-	end
-	result = table.concat(result, " ")
-	return #result > 0 and result or ""
+local diagnostics_indicator = function(count, level, diagnostics_dict, context)
+  local icon = level:match("error") and " " or " "
+  return " " .. icon .. count
 end
 
 bufferline.setup({

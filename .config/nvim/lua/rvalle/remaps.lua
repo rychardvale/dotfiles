@@ -20,7 +20,7 @@ nnoremap("n", "nzz")
 nnoremap("N", "Nzz")
 
 -- nnoremap("<leader>pv", ":Ex<CR>")
-nnoremap("<leader>pv", ":Telescope file_browser path=%:p:h<CR>")
+nnoremap("<leader>pv", ":Vex<CR>")
 
 -- debugger
 nnoremap("<F5>", ":lua require'dap'.toggle_breakpoint()<CR>")

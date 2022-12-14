@@ -3,14 +3,6 @@ if not ok then
 	return
 end
 
-telescope.setup({
-	extensions = {
-		file_browser = {
-			hijack_netrw = true,
-		},
-	},
-})
+telescope.setup()
 
 telescope.load_extension("projects")
-telescope.load_extension("file_browser")
---telescope.load_extension("fzf")

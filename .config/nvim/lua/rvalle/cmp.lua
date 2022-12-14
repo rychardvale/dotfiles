@@ -8,9 +8,6 @@ if not okcmp then
 	return
 end
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-
 cmp.setup({
 	formatting = {
 		format = lspkind.cmp_format({
@@ -68,7 +65,7 @@ cmp.setup({
 	}),
 	sources = cmp.config.sources({
 		{ name = "nvim_lsp_signature_help" },
-		{ name = "nvim_lsp", keyword_length = 2 },
+		{ name = "nvim_lsp" },
 		{ name = "luasnip" },
 		{ name = "nvim_lua" },
 		{ name = "path" },

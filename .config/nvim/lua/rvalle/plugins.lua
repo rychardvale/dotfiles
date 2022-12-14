@@ -15,7 +15,6 @@ return require("packer").startup(function(use)
 	})
 	use("nvim-telescope/telescope.nvim")
 	use("nvim-telescope/telescope-project.nvim")
-	use("nvim-telescope/telescope-file-browser.nvim")
 
 	use("NvChad/nvim-colorizer.lua")
 
@@ -31,18 +30,13 @@ return require("packer").startup(function(use)
 			require("trouble").setup()
 		end,
 	})
-	use("lvimuser/lsp-inlayhints.nvim")
 
-	use("SmiteshP/nvim-navic")
-	use("fgheng/winbar.nvim")
 	use({
 		"rmagatti/goto-preview",
 		config = function()
 			require("goto-preview").setup()
 		end,
 	})
-
-	use("lukas-reineke/indent-blankline.nvim")
 	use("kyazdani42/nvim-web-devicons")
 
 	-- status line

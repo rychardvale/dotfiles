@@ -27,12 +27,15 @@ opt.foldlevel = 99
 
 opt.cursorline = true
 
+g.netrw_liststyle = 3
+
 opt.termguicolors = true
 opt.background = "dark"
 opt.showmode = false
 opt.showcmd = false
-opt.scrolloff = 4
+opt.scrolloff = 10
 opt.sidescrolloff = 4
+opt.wrap = false
 opt.swapfile = false
 
 g.mkdp_preview_options = {

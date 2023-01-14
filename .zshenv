@@ -7,6 +7,7 @@ export PATH="$PATH:$HOME/.local/bin/git-diff-fancy/"
 export PNPM_HOME="$HOME/.local/share/pnpm"
 export PATH="$PNPM_HOME:$PATH"
 export NEOVIDE_MULTIGRID=true
+export EDITOR="$HOME/.local/bin/nvim"
 export NVM_DIR="$HOME/.nvm"
 export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
 --color=dark

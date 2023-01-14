@@ -3,20 +3,38 @@ if not okmason then
 	return
 end
 
+local okufo, ufo = pcall(require, "ufo")
+if not okufo then
+	return
+end
+
 masonlsp.setup()
 
 local nnoremap = require("rvalle.keymap").nnoremap
 local inoremap = require("rvalle.keymap").inoremap
 local lspconfig = require("lspconfig")
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
+capabilities.textDocument.foldingRange = {
+	dynamicRegistration = false,
+	lineFoldingOnly = true,
+}
 
 local function config(_config)
 	return vim.tbl_deep_extend("force", {
 		capabilities = capabilities,
-		on_attach = function()
+		on_attach = function(client, bufnr)
+			if client.supports_method("textDocument/formatting") then
+				nnoremap("<leader>f", function()
+					vim.lsp.buf.format({
+						async = true,
+						filter = function(cl)
+							return cl.name == "null-ls"
+						end,
+						bufnr = bufnr,
+					})
+				end)
+			end
 			nnoremap("gD", "<cmd>lua vim.lsp.buf.declaration()<CR>")
-			nnoremap("gi", "<cmd>lua vim.lsp.buf.implementation()<CR>")
 			inoremap("<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>")
 			nnoremap("<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>")
 		end,
@@ -24,17 +42,13 @@ local function config(_config)
 end
 
 lspconfig.pyright.setup(config())
+lspconfig.bashls.setup(config())
+lspconfig.sqlls.setup(config())
 lspconfig.sumneko_lua.setup(config({
 	settings = {
 		Lua = {
 			diagnostics = {
 				globals = { "vim" },
-			},
-			workspace = {
-				library = vim.api.nvim_get_runtime_file("lua", true),
-			},
-			telemetry = {
-				enable = false,
 			},
 		},
 	},
@@ -64,8 +78,9 @@ end
 vim.diagnostic.config({
 	virtual_text = true,
 	signs = true,
-	underline = true,
-	update_in_insert = true,
+	underline = false,
+	update_in_insert = false,
 	severity_sort = true,
 	float = { source = "always" },
 })
+ufo.setup()

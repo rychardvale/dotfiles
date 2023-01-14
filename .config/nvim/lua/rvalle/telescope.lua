@@ -3,6 +3,23 @@ if not ok then
 	return
 end
 
-telescope.setup()
+require("git-worktree").setup()
+telescope.setup({
+	defaults = {
+		file_ignore_patterns = { "node_modules" },
+	},
+	extensions = {
+		file_browser = {
+			hijack_netrw = true,
+		},
+	},
+	pickers = {
+		find_files = {
+			hidden = true,
+		},
+	},
+})
 
 telescope.load_extension("projects")
+telescope.load_extension("file_browser")
+telescope.load_extension("git_worktree")

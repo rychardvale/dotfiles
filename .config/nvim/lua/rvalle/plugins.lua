@@ -1,5 +1,15 @@
-vim.cmd([[ packadd packer.nvim ]])
+local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
+if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
+	vim.fn.execute("!git clone https://github.com/wbthomason/packer.nvim " .. install_path)
+end
 
+vim.cmd([[ packadd packer.nvim ]])
+vim.cmd [[
+  augroup packer_user_config
+    autocmd!
+    autocmd BufWritePost plugins.lua source <afile> | PackerSync
+  augroup end
+]]
 return require("packer").startup(function(use)
 	use("wbthomason/packer.nvim")
 	use("nvim-lua/plenary.nvim")
@@ -15,12 +25,15 @@ return require("packer").startup(function(use)
 	})
 	use("nvim-telescope/telescope.nvim")
 	use("nvim-telescope/telescope-project.nvim")
-
+	use({ "nvim-telescope/telescope-file-browser.nvim" })
 	use("NvChad/nvim-colorizer.lua")
 
-	-- themes
-	use("folke/tokyonight.nvim")
-	use({ "catppuccin/nvim", as = "catppuccin" })
+	use({
+		"j-hui/fidget.nvim",
+		config = function()
+			require("fidget").setup()
+		end,
+	})
 
 	use("neovim/nvim-lspconfig")
 	use("onsails/lspkind.nvim")
@@ -31,12 +44,6 @@ return require("packer").startup(function(use)
 		end,
 	})
 
-	use({
-		"rmagatti/goto-preview",
-		config = function()
-			require("goto-preview").setup()
-		end,
-	})
 	use("kyazdani42/nvim-web-devicons")
 
 	-- status line
@@ -92,6 +99,7 @@ return require("packer").startup(function(use)
 	use("glepnir/lspsaga.nvim")
 
 	use("numToStr/Comment.nvim")
+	use("JoosepAlviste/nvim-ts-context-commentstring")
 	use({
 		"lewis6991/gitsigns.nvim",
 		requires = { "nvim-lua/plenary.nvim" },
@@ -100,5 +108,17 @@ return require("packer").startup(function(use)
 		end,
 	})
 	use("tpope/vim-fugitive")
-	use("ThePrimeagen/harpoon")
+	use("ThePrimeagen/git-worktree.nvim")
+
+	use("stevearc/oil.nvim")
+	use({ "kevinhwang91/nvim-ufo", requires = "kevinhwang91/promise-async" })
+
+	-- Themmes
+	use("navarasu/onedark.nvim")
+	use("folke/tokyonight.nvim")
+	use({ "catppuccin/nvim", as = "catppuccin" })
+	use({ "ellisonleao/gruvbox.nvim" })
+
+	-- use("eandrju/cellular-automaton.nvim")
+	use("RRethy/vim-illuminate")
 end)

@@ -5,7 +5,7 @@ end
 
 local colors = require("tokyonight.colors").setup()
 
-local custom_theme = {
+local tokyo_theme = {
 	normal = {
 		a = { fg = colors.blue1, bg = colors.bg_dark },
 		b = { fg = colors.green, bg = colors.bg_dark },
@@ -25,8 +25,8 @@ local custom_theme = {
 
 lualine.setup({
 	options = {
-		theme = custom_theme,
+		theme = tokyo_theme,
 		component_separators = "|",
-		section_separators = { left = "", right = "" },
+		-- section_separators = { left = "", right = "" },
 	},
 })

@@ -4,7 +4,7 @@ if not ok_tokyooooo then
 end
 
 tokyo.setup({
-	style = "night",
+	style = "moon",
 	terminal_colors = true,
 	on_highlights = function(hl, c)
 		local green = "#ABE9B3"
@@ -21,6 +21,7 @@ tokyo.setup({
 		}
 		hl.TelescopePromptTitle = {
 			bg = pink,
+			fg = c.bg_dark,
 		}
 		hl.TelescopePreviewTitle = {
 			bg = green,
@@ -37,7 +38,7 @@ tokyo.setup({
 		}
 
 		-- Lsp Sga stuff
-		hl.LspSagaAutoPreview = {
+		--[[ hl.LspSagaAutoPreview = {
 			fg = c.bg_dark,
 			bg = c.bg_dark,
 		}
@@ -78,6 +79,6 @@ tokyo.setup({
 		hl.FinderSpinnerBorder = {
 			bg = c.bg_dark,
 			fg = c.bg_dark,
-		}
+		} ]]
 	end,
 })

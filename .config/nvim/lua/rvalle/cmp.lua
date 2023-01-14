@@ -11,26 +11,15 @@ end
 cmp.setup({
 	formatting = {
 		format = lspkind.cmp_format({
-			fields = { "kind", "abbr", "menu" },
+			-- fields = { "kind", "abbr", "menu" },
 			mode = "symbol",
 			maxWidth = 50,
-			symbol_map = {
-				NONE = "",
-				Array = "",
-				Boolean = "⊨",
-				Class = "",
-				Constructor = "",
-				Key = "",
-				Namespace = "",
-				Null = "NULL",
-				Number = "#",
-				Object = "⦿",
-				Package = "",
-				Property = "",
-				Reference = "",
-				Snippet = "",
-				TypeParameter = "",
-				Unit = "",
+			menu = {
+				buffer = "[Buffer]",
+				nvim_lsp = "[LSP]",
+				luasnip = "[LuaSnip]",
+				nvim_lua = "[Lua]",
+				latex_symbols = "[Latex]",
 			},
 		}),
 	},

@@ -4,12 +4,12 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 end
 
 vim.cmd([[ packadd packer.nvim ]])
-vim.cmd [[
+vim.cmd([[
   augroup packer_user_config
     autocmd!
     autocmd BufWritePost plugins.lua source <afile> | PackerSync
   augroup end
-]]
+]])
 return require("packer").startup(function(use)
 	use("wbthomason/packer.nvim")
 	use("nvim-lua/plenary.nvim")
@@ -24,9 +24,21 @@ return require("packer").startup(function(use)
 		end,
 	})
 	use("nvim-telescope/telescope.nvim")
-	use("nvim-telescope/telescope-project.nvim")
 	use({ "nvim-telescope/telescope-file-browser.nvim" })
+	use({
+		"nvim-telescope/telescope-fzf-native.nvim",
+		run = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
+	})
+
 	use("NvChad/nvim-colorizer.lua")
+
+	use({
+		"folke/trouble.nvim",
+		requires = "kyazdani42/nvim-web-devicons",
+		config = function()
+			require("trouble").setup()
+		end,
+	})
 
 	use({
 		"j-hui/fidget.nvim",
@@ -37,13 +49,6 @@ return require("packer").startup(function(use)
 
 	use("neovim/nvim-lspconfig")
 	use("onsails/lspkind.nvim")
-	use({
-		"folke/trouble.nvim",
-		config = function()
-			require("trouble").setup()
-		end,
-	})
-
 	use("kyazdani42/nvim-web-devicons")
 
 	-- status line
@@ -75,9 +80,9 @@ return require("packer").startup(function(use)
 	use("hrsh7th/cmp-cmdline")
 
 	-- debugers
-	use("mfussenegger/nvim-dap")
+	--[[ use("mfussenegger/nvim-dap")
 	use("rcarriga/nvim-dap-ui")
-	use("jayp0521/mason-nvim-dap.nvim")
+	use("jayp0521/mason-nvim-dap.nvim") ]]
 
 	--snippets
 	use("L3MON4D3/LuaSnip")
@@ -95,7 +100,6 @@ return require("packer").startup(function(use)
 		"akinsho/bufferline.nvim",
 		requires = "kyazdani42/nvim-web-devicons",
 	})
-	use("ahmedkhalf/project.nvim")
 	use("glepnir/lspsaga.nvim")
 
 	use("numToStr/Comment.nvim")
@@ -109,9 +113,8 @@ return require("packer").startup(function(use)
 	})
 	use("tpope/vim-fugitive")
 	use("ThePrimeagen/git-worktree.nvim")
-
+	use("ThePrimeagen/harpoon")
 	use("stevearc/oil.nvim")
-	use({ "kevinhwang91/nvim-ufo", requires = "kevinhwang91/promise-async" })
 
 	-- Themmes
 	use("navarasu/onedark.nvim")
@@ -119,6 +122,5 @@ return require("packer").startup(function(use)
 	use({ "catppuccin/nvim", as = "catppuccin" })
 	use({ "ellisonleao/gruvbox.nvim" })
 
-	-- use("eandrju/cellular-automaton.nvim")
 	use("RRethy/vim-illuminate")
 end)

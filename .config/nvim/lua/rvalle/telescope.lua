@@ -20,6 +20,7 @@ telescope.setup({
 	},
 })
 
-telescope.load_extension("projects")
-telescope.load_extension("file_browser")
-telescope.load_extension("git_worktree")
+-- telescope.load_extension("projects")
+pcall(telescope.load_extension, "fzf")
+pcall(telescope.load_extension, "file_browser")
+pcall(telescope.load_extension, "git_worktree")

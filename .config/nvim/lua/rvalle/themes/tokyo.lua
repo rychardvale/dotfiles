@@ -36,49 +36,5 @@ tokyo.setup({
 		hl.CursorLine = {
 			bg = c.bg_dark,
 		}
-
-		-- Lsp Sga stuff
-		--[[ hl.LspSagaAutoPreview = {
-			fg = c.bg_dark,
-			bg = c.bg_dark,
-		}
-
-		hl.LspSagaHoverBorder = {
-			bg = c.bg_dark,
-			fg = c.bg_dark,
-		}
-
-		hl.FloatBorder = {
-			bg = c.bg_dark,
-		}
-
-		-- Finder
-		hl.LspSagaLspFinderBorder = {
-			fg = c.bg_dark,
-			bg = c.bg_dark,
-		}
-		hl.LspSagaFinderSelection = {
-			fg = c.blue1,
-			bg = c.bg_dark,
-		}
-		hl.FinderPreviewSearch = {
-			bg = c.bg_dark,
-		}
-		hl.FinderParam = {
-			fg = c.blue1,
-			bg = c.bg_dark,
-		}
-		hl.FinderSpinnerTitle = {
-			bg = c.bg_dark,
-			fg = pink,
-		}
-		hl.FinderSpinner = {
-			bg = c.bg_dark,
-			fg = c.blue1,
-		}
-		hl.FinderSpinnerBorder = {
-			bg = c.bg_dark,
-			fg = c.bg_dark,
-		} ]]
 	end,
 })

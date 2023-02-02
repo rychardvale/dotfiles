@@ -37,20 +37,6 @@ cmp.setup({
 		["<C-e>"] = cmp.mapping.abort(),
 		["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
 		["<c-y>"] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Insert }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-		["<Tab>"] = cmp.mapping(function(fallback) -- tab to switch through list
-			if cmp.visible() then
-				cmp.select_next_item()
-			else
-				fallback()
-			end
-		end, { "i", "s" }),
-		["<S-Tab>"] = cmp.mapping(function(fallback)
-			if cmp.visible() then
-				cmp.select_prev_item()
-			else
-				fallback()
-			end
-		end, { "i", "s" }),
 	}),
 	sources = cmp.config.sources({
 		{ name = "nvim_lsp_signature_help" },
@@ -58,17 +44,17 @@ cmp.setup({
 		{ name = "luasnip" },
 		{ name = "nvim_lua" },
 		{ name = "path" },
-		{ name = "gh_issues" },
+		{ name = "gh_issues", keyword_length = 3 },
 	}, {
-		{ name = "buffer" },
+		{ name = "buffer", keyword_length = 3 },
 	}),
 })
 
 cmp.setup.filetype("gitcommit", {
 	sources = cmp.config.sources({
-		{ name = "cmp_git" }, -- You can specify the `cmp_git` source if you were installed it.
+		{ name = "cmp_git", keyword_length = 3 }, -- You can specify the `cmp_git` source if you were installed it.
 	}, {
-		{ name = "buffer" },
+		{ name = "buffer", keyword_length = 3 },
 	}),
 })
 

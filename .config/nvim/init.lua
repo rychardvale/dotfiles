@@ -9,12 +9,11 @@ require("rvalle.lsp")
 require("rvalle.null-ls")
 require("rvalle.comment")
 require("rvalle.colorizer")
-require("rvalle.project")
 require("rvalle.statusline")
 require("rvalle.oil")
 require("rvalle.illuminate")
 require("rvalle.lspsaga")
 
--- testing without
 -- require("rvalle.bufferline")
+-- require("rvalle.project")
 -- require("rvalle.dap")

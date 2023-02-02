@@ -17,7 +17,8 @@ nnoremap("<C-u>", "<C-u>zz")
 nnoremap("<C-d>", "<C-d>zz")
 nnoremap("n", "nzz")
 nnoremap("N", "Nzz")
-nnoremap("<leader>fml", ":CellularAutomaton make_it_rain<CR>")
+nnoremap("<leader>pv", ":Oil --float<CR>")
+nnoremap("<leader>D", ":TroubleToggle<CR>")
 
 -- debugger
 nnoremap("<F5>", ":lua require'dap'.toggle_breakpoint()<CR>")
@@ -35,11 +36,6 @@ nnoremap("<leader>c", function() -- closes current buffer
 	end
 	vim.cmd(string.format("%s %d", "bdelete!", bufnr))
 end) -- closes buffer
-nnoremap("<leader>bj", ":BufferLinePick<CR>") -- pick buffer
-nnoremap("<leader>b[", ":BufferLineCloseLeft<CR>")
-nnoremap("<leader>b]", ":BufferLineCloseRight<CR>")
-nnoremap("<leader>bl", ":BufferLineMoveNext<CR>")
-nnoremap("<leader>bh", ":BufferLineMovePrev<CR>")
 
 -- Telescope
 nnoremap("<leader>se", ":Telescope find_files<CR>")
@@ -47,8 +43,25 @@ nnoremap("<leader>lg", ":Telescope live_grep<CR>")
 nnoremap("<leader>sr", ":Telescope oldfiles<CR>")
 nnoremap("<leader>R", ":Telescope lsp_references<CR>")
 nnoremap("<leader>P", ":Telescope projects<CR>")
-nnoremap("<leader>D", ":Telescope diagnostics<CR>")
-nnoremap("<leader>sd", ":Telescope lsp_document_symbols<CR>")
-nnoremap("<leader>e", ":Telescope file_browser path=%:p:h<CR>")
-nnoremap("<leader>pv", ":Oil --float<CR>")
+nnoremap("<leader>fb", ":Telescope buffers<CR>")
+nnoremap("<leader>fs", ":Telescope lsp_document_symbols<CR>")
 nnoremap("<leader>gl", ":lua require('telescope').extensions.git_worktree.git_worktrees()<CR>")
+
+nnoremap("<leader>f", function()
+	vim.lsp.buf.format({ async = true })
+end)
+vnoremap("<leader>f", function()
+	vim.lsp.buf.format(bufopts)
+end)
+
+inoremap("<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>")
+nnoremap("<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>")
+nnoremap("<leader>lr", function()
+	vim.lsp.buf.rename(bufopts)
+end)
+nnoremap("<leader>la", function()
+	vim.lsp.buf.code_action(bufopts)
+end)
+nnoremap("K", function()
+	vim.lsp.buf.hover(bufopts)
+end)

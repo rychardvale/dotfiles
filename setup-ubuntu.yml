@@ -3,7 +3,7 @@
   connection: local
   tasks:
     - name: the gang
-      become: true
+      become: yes
       apt:
         name: "{{ item }}"
         install_recommends: yes
@@ -23,41 +23,44 @@
         - xrandr
         - feh
         - i3
+        - maim
     - block:
         - name: Changing Default Shell to ZSH
-          become: true
+          become: yes
           user:
             name: "{{ ansible_user_id }}"
             shell: /bin/zsh
         - name: get a kitty
-          become: true
+          become: yes
           command: "curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin;
             ln -s ~/.local/kitty.app/bin/kitty /usr/local/bin"
         - name: copy fonts
           command: "cp -r ./.fonts ~/"
         - name: get sweet themes
-          become: true
+          become: yes
           shell:
             cmd: "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git
               $HOME/.oh-my-zsh/custom/themes/powerlevel10k"
         - name: Get that nvm boy
-          become: true
+          become: yes
           command: "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh
             | bash; nvm install --lts"
         - name: get my boi cargo
-          become: true
+          become: yes
           command: "curl https://sh.rustup.rs -sSf | sh"
         - name: Tree sitter fam
           command: "cargo install tree-sitter-cli"
         - name: Neovim
-          become: true
-          command: "curl -L https://github.com/neovim/neovim/releases/latest/download/nvim.appimage -o nvim; sudo mv nvim /usr/local/bin"
+          become: yes
+          command: "curl -L https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+            -o nvim; mv nvim /usr/local/bin"
         - name: Packer
-          command: "git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim"
+          command: "git clone --depth 1 https://github.com/wbthomason/packer.nvim
+            ~/.local/share/nvim/site/pack/packer/start/packer.nvim"
         - name: Copy dotfiles
-          become: true
+          become: yes
           shell: cp {{ item }} ~/
-          with_files: 
+          with_files:
             - .zshrc
             - .zshenv
             - .tmux.conf
@@ -66,3 +69,13 @@
           command: cp -r ./bg ~/
         - name: copy .config
           command: mkdir -p ~/.config; cp -r ./.config/* ~/.config
+    - block:
+        - name: "Get golang"
+          get_url:
+            url: https://go.dev/dl/go1.20.linux-amd64.tar.gz
+            dest: "./go.tar.gz"
+            register: godownload
+        - name: "Install golang"
+          become: yes
+          command: rm -rf /usr/local/go && tar -C /usr/local -xzf go.tar.gz
+          when: godownload.rc == 0

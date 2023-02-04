@@ -1,0 +1,68 @@
+- name: Prepare stuff
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: the gang
+      become: true
+      apt:
+        name: "{{ item }}"
+        install_recommends: yes
+        state: present
+      loop:
+        - vim
+        - htop
+        - curl
+        - make
+        - build-essential
+        - tmux
+        - zsh
+        - ripgrep
+        - fzf
+        - fd-find
+        - xset
+        - xrandr
+        - feh
+        - i3
+    - block:
+        - name: Changing Default Shell to ZSH
+          become: true
+          user:
+            name: "{{ ansible_user_id }}"
+            shell: /bin/zsh
+        - name: get a kitty
+          become: true
+          command: "curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin;
+            ln -s ~/.local/kitty.app/bin/kitty /usr/local/bin"
+        - name: copy fonts
+          command: "cp -r ./.fonts ~/"
+        - name: get sweet themes
+          become: true
+          shell:
+            cmd: "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git
+              $HOME/.oh-my-zsh/custom/themes/powerlevel10k"
+        - name: Get that nvm boy
+          become: true
+          command: "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh
+            | bash; nvm install --lts"
+        - name: get my boi cargo
+          become: true
+          command: "curl https://sh.rustup.rs -sSf | sh"
+        - name: Tree sitter fam
+          command: "cargo install tree-sitter-cli"
+        - name: Neovim
+          become: true
+          command: "curl -L https://github.com/neovim/neovim/releases/latest/download/nvim.appimage -o nvim; sudo mv nvim /usr/local/bin"
+        - name: Packer
+          command: "git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim"
+        - name: Copy dotfiles
+          become: true
+          shell: cp {{ item }} ~/
+          with_files: 
+            - .zshrc
+            - .zshenv
+            - .tmux.conf
+            - .bashrc
+        - name: copy bg
+          command: cp -r ./bg ~/
+        - name: copy .config
+          command: mkdir -p ~/.config; cp -r ./.config/* ~/.config

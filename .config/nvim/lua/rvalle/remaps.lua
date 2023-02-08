@@ -47,10 +47,10 @@ nnoremap("<leader>fb", ":Telescope buffers<CR>")
 nnoremap("<leader>fs", ":Telescope lsp_document_symbols<CR>")
 nnoremap("<leader>gl", ":lua require('telescope').extensions.git_worktree.git_worktrees()<CR>")
 
-nnoremap("<leader>f", function()
+nnoremap("<leader>ff", function()
 	vim.lsp.buf.format({ async = true })
 end)
-vnoremap("<leader>f", function()
+vnoremap("<leader>ff", function()
 	vim.lsp.buf.format(bufopts)
 end)
 

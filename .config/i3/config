@@ -31,7 +31,7 @@ exec --no-startup-id feh --bg-fill -Z ~/bg/
 exec "picom -b --experimental-backends --config ~/.config/picom.conf"
 
 # polybar setup
-exec "~/.config/bar/launch.sh"
+# exec "~/.config/bar/launch.sh"
 
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
@@ -167,7 +167,6 @@ bindsym Shift+Print exec --no-startup-id maim --format=png --select "/home/$USER
 bindsym $mod+bracketright exec --no-startup-id "setxkbmap -layout us -variant intl"
 bindsym $mod+bracketleft exec --no-startup-id "setxkbmap -layout us"
 
-bindsym $mod+t exec kitty 
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -191,8 +190,8 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 for_window [class=".*"] border pixel 0 
-gaps inner 7
-gaps outer 1
+gaps inner 2
+gaps outer 2
 focus_wrapping no
 
 smart_borders on
@@ -201,5 +200,7 @@ smart_borders no_gaps
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-     status_command i3status
+    status_command i3status
+	position top
+	font pango:DejaVu Sans Mono 8
 }

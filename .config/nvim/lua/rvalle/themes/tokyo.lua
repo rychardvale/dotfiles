@@ -6,6 +6,7 @@ end
 tokyo.setup({
 	style = "moon",
 	terminal_colors = true,
+	transparent = true,
 	on_highlights = function(hl, c)
 		local green = "#ABE9B3"
 		local pink = "#F28FAD"

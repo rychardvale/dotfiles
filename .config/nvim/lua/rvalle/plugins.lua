@@ -1,83 +1,81 @@
-local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
-if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-	vim.fn.execute("!git clone https://github.com/wbthomason/packer.nvim " .. install_path)
-end
-
-vim.cmd([[ packadd packer.nvim ]])
-vim.cmd([[
-  augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost plugins.lua source <afile> | PackerSync
-  augroup end
-]])
-return require("packer").startup(function(use)
-	use("wbthomason/packer.nvim")
-	use("nvim-lua/plenary.nvim")
-	use({
-		"nvim-treesitter/nvim-treesitter",
-		run = ":TSUpdate",
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+	vim.fn.system({
+		"git",
+		"clone",
+		"--filter=blob:none",
+		"https://github.com/folke/lazy.nvim.git",
+		"--branch=stable", -- latest stable release
+		lazypath,
 	})
-	use({
+end
+vim.opt.rtp:prepend(lazypath)
+
+require("lazy").setup({
+	"nvim-lua/plenary.nvim",
+	{
+		"nvim-treesitter/nvim-treesitter",
+		build = ":TSUpdate",
+	},
+	{
 		"nvim-treesitter/nvim-treesitter-context",
 		config = function()
 			require("treesitter-context").setup()
 		end,
-	})
-	use("nvim-telescope/telescope.nvim")
-	use({ "nvim-telescope/telescope-file-browser.nvim" })
-	use({
+	},
+	"nvim-telescope/telescope.nvim",
+	{ "nvim-telescope/telescope-file-browser.nvim" },
+	{
 		"nvim-telescope/telescope-fzf-native.nvim",
-		run = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
-	})
+		build = "make",
+		-- build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build"
+	},
 
-	use("NvChad/nvim-colorizer.lua")
+	"NvChad/nvim-colorizer.lua",
 
-	use({
+	{
 		"folke/trouble.nvim",
-		requires = "kyazdani42/nvim-web-devicons",
+		dependencies = { "kyazdani42/nvim-web-devicons" },
 		config = function()
 			require("trouble").setup()
 		end,
-	})
+	},
 
-	use({
+	{
 		"j-hui/fidget.nvim",
 		config = function()
 			require("fidget").setup()
 		end,
-	})
+	},
 
-	use("neovim/nvim-lspconfig")
-	use("onsails/lspkind.nvim")
-	use("kyazdani42/nvim-web-devicons")
+	"neovim/nvim-lspconfig",
+	"onsails/lspkind.nvim",
+	"kyazdani42/nvim-web-devicons",
 
 	-- status line
-	use({
+	{
 		"nvim-lualine/lualine.nvim",
-		requires = { "kyazdani42/nvim-web-devicons", opt = true },
-	})
-	use({
+		dependencies = { "kyazdani42/nvim-web-devicons" },
+	},
+	{
 		"williamboman/mason.nvim",
 		config = function()
 			require("mason").setup()
 		end,
-	})
-	use("williamboman/mason-lspconfig.nvim")
-
-	use({
+	},
+	"williamboman/mason-lspconfig.nvim",
+	{
 		"iamcco/markdown-preview.nvim",
-		run = "cd app && npm install",
-		setup = function() end,
+		build = "cd app && npm install",
 		ft = { "markdown" },
-	})
+	},
 
-	--cmp
-	use("hrsh7th/nvim-cmp")
-	use("hrsh7th/cmp-buffer")
-	use("hrsh7th/cmp-path")
-	use("hrsh7th/cmp-nvim-lua")
-	use("hrsh7th/cmp-nvim-lsp")
-	use("hrsh7th/cmp-cmdline")
+	"hrsh7th/nvim-cmp",
+	"hrsh7th/cmp-buffer",
+	"hrsh7th/cmp-path",
+	"hrsh7th/cmp-nvim-lua",
+	"hrsh7th/cmp-nvim-lsp",
+	"hrsh7th/cmp-cmdline",
 
 	-- debugers
 	--[[ use("mfussenegger/nvim-dap")
@@ -85,42 +83,40 @@ return require("packer").startup(function(use)
 	use("jayp0521/mason-nvim-dap.nvim") ]]
 
 	--snippets
-	use("L3MON4D3/LuaSnip")
-	use("saadparwaiz1/cmp_luasnip")
+	"L3MON4D3/LuaSnip",
+	"saadparwaiz1/cmp_luasnip",
 
-	use("jose-elias-alvarez/null-ls.nvim")
-	use("windwp/nvim-ts-autotag")
-	use({
+	"jose-elias-alvarez/null-ls.nvim",
+	"windwp/nvim-ts-autotag",
+	{
 		"windwp/nvim-autopairs",
 		config = function()
 			require("nvim-autopairs").setup()
 		end,
-	})
-	use({
+	},
+	{
 		"akinsho/bufferline.nvim",
-		requires = "kyazdani42/nvim-web-devicons",
-	})
-	use("glepnir/lspsaga.nvim")
-
-	use("numToStr/Comment.nvim")
-	use("JoosepAlviste/nvim-ts-context-commentstring")
-	use({
+		dependencies = { "kyazdani42/nvim-web-devicons" },
+	},
+	"glepnir/lspsaga.nvim",
+	"numToStr/Comment.nvim",
+	"JoosepAlviste/nvim-ts-context-commentstring",
+	{
 		"lewis6991/gitsigns.nvim",
-		requires = { "nvim-lua/plenary.nvim" },
+		dependencies = { "nvim-lua/plenary.nvim" },
 		config = function()
 			require("gitsigns").setup()
 		end,
-	})
-	use("tpope/vim-fugitive")
-	use("ThePrimeagen/git-worktree.nvim")
-	use("ThePrimeagen/harpoon")
-	use("stevearc/oil.nvim")
+	},
+	"tpope/vim-fugitive",
+	"ThePrimeagen/git-worktree.nvim",
+	"ThePrimeagen/harpoon",
+	"stevearc/oil.nvim",
 
 	-- Themmes
-	use("navarasu/onedark.nvim")
-	use("folke/tokyonight.nvim")
-	use({ "catppuccin/nvim", as = "catppuccin" })
-	use({ "ellisonleao/gruvbox.nvim" })
-
-	use("RRethy/vim-illuminate")
-end)
+	"navarasu/onedark.nvim",
+	"folke/tokyonight.nvim",
+	{ "catppuccin/nvim", as = "catppuccin" },
+	{ "ellisonleao/gruvbox.nvim" },
+	"RRethy/vim-illuminate",
+})

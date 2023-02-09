@@ -2,6 +2,7 @@
   hosts: localhost
   connection: local
   tasks:
+
     - name: the gang
       become: yes
       apt:
@@ -27,27 +28,31 @@
         - fuse
         - libfuse2
         - python3
-    - block:
-        - name: Changing Default Shell to ZSH
-          become: yes
-          user:
-            name: "{{ ansible_user_id }}"
-            shell: /bin/zsh
-    - block:
+
+    - name: Changing Default Shell to ZSH
+      become: yes
+      user:
+        name: "{{ ansible_user_id }}"
+        shell: /bin/zsh
+
+    - name: "Install OhMyZSH"
+      block: 
         - name: check if ohmyzsh
           stat:
             path: "~/.oh-my-zsh"
           register: ohmyzsh
-        - name: Check if ohmyzsh exists
-          get_url:
-            url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
-            dest: "./ohmyzsh.sh"
-            mode: 0755
+          block: 
+            - name: Download OhMyZsh
+              get_url:
+                url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+                dest: "./ohmyzsh.sh"
+                mode: 0755
+            - name: Install ohmyzsh
+              shell:
+                cmd: "./ohmyzsh.sh -y"
           when: ohmyzsh.stat.exists == false
-        - name: Install ohmyzsh
-          shell:
-            cmd: "./ohmyzsh.sh -y"
-          when: ohmyzsh.stat.exists == false
+
+    - name: Setup Local Binaries
     - block:
         - name: check .local/bin
           stat:
@@ -58,28 +63,34 @@
             path: "~/.local/bin"
             state: directory
           when: localbin.stat.exists == false
-    - block:
+
+    - name: Setup Kitty
+    - block: 
         - name: check if kitty exists
           stat:
             path: "~/.local/kitty.app"
           register: kitty
-        - name: get a kitty
-          get_url:
-            url: https://sw.kovidgoyal.net/kitty/installer.sh
-            dest: "./kitty-installer.sh"
+
+        - block:
+            - name: get a kitty
+              get_url:
+                url: https://sw.kovidgoyal.net/kitty/installer.sh
+                dest: "./kitty-installer.sh"
+
+            - name: install kitty
+              command: /bin/sh "./kitty-installer.sh"
+
+            - name: Link Kitty
+              file:
+                src: "~/.local/kitty.app/bin/kitty"
+                dest: "~/.local/bin/kitty"
+                state: link
           when: kitty.stat.exists == false
-        - name: install kitty
-          command: /bin/sh "./kitty-installer.sh"
-          when: kitty.stat.exists == false
-        - name: Link Kitty
-          file:
-            src: "~/.local/kitty.app/bin/kitty"
-            dest: "~/.local/bin/kitty"
-            state: link
-          when: kitty.stat.exists == false
-    - block:
-        - name: copy fonts
-          command: "cp -r ./.fonts ~/"
+
+    - name: copy fonts
+      command: "cp -r ./.fonts ~/"
+
+    - name: Setup Powerlevel
     - block:
         - name: check powerlevel installed
           stat:
@@ -91,6 +102,8 @@
             dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/themes/powerlevel10k"
             depth: 1
           when: powerlevel.stat.exists == false
+
+    - name: Setup NVM
     - block:
         - name: chekc if nvm exists
           become: yes
@@ -100,100 +113,122 @@
             executable: /bin/zsh
           ignore_errors: true
           register: nvmstuff
-        - name: Download nvm
-          get_url:
-            url: https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh
-            dest: "./nvm.sh"
+
+        - block: 
+            - name: Download nvm
+              get_url:
+                url: https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh
+                dest: "./nvm.sh"
+
+            - name: install nvm
+              command: bash ./nvm.sh
           when: nvmstuff.rc != 0
-        - name: install nvm
-          command: bash ./nvm.sh
-          when: nvmstuff.rc != 0
+
+    - name: Setup Cargo
     - block:
         - name: check if cargo exsits
           command: which cargo
           ignore_errors: true
           register: cargo
+
         - name: download cargo
           become: yes
           get_url:
             url: https://sh.rustup.rs
             dest: "./cargo.sh"
-          when: cargo.rc != 0
+              
         - name: Install cargo
           shell:
             cmd: "./cargo.sh -y"
-          when: cargo.rc != 0
+      when: cargo.rc != 0
+
+    - name: Setup Neovim
     - block:
         - name: Check if neovim exists
           command: which nvim
           ignore_errors: true
           register: nvim
-        - name: Download neovim
-          become: yes
-          get_url:
-            url: https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
-            dest: "./nvim"
-            mode: 0755
+
+        - block:
+            - name: Download neovim
+              become: yes
+              get_url:
+                url: https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+                dest: "./nvim"
+                mode: 0755
+
+            - name: Install neovim
+              become: yes
+              command: mv nvim /usr/local/bin
+
           when: nvim.rc != 0
-        - name: Install neovim
-          become: yes
-          command: mv nvim /usr/local/bin
-          when: nvim.rc != 0
+
+    - name: Setup Packer
     - block:
         - name: Check if packer exists
           stat:
             path: "~/.local/share/nvim/site/pack/packer/start/packer.nvim"
           register: packer
+
         - name: Clone Packer
           git:
             repo: https://github.com/wbthomason/packer.nvim
             dest: ~/.local/share/nvim/site/pack/packer/start/packer.nvim
             depth: 1
-          when: packer.stat.exists == false
-    - block:
-        - name: Copy dotfiles
-          shell: cp {{ item }} ~/
-          loop:
-            - .zshrc
-            - .zshenv
-            - .tmux.conf
-            - .bashrc
-        - name: copy bg
-          command: cp -r ./bg ~/
+      when: packer.stat.exists == false
+
+    - name: Copy dotfiles
+      shell: cp {{ item }} ~/
+      loop:
+        - .zshrc
+        - .zshenv
+        - .tmux.conf
+        - .bashrc
+
+    - name: copy bg
+      command: cp -r ./bg ~/
+
     - name: Check if .config exists
       stat:
         path: ~/.config
       register: config
+
     - name: create .config
       file:
         path: ~/.config
         state: directory
       when: config.stat.exists == false
+
     - name: copy .config stuff
       shell:
         cmd: "cp -r ./.config/* ~/.config/"
+
     - name: Install lts
       become: yes
       become_user: "{{ ansible_user_id }}"
       shell: "source ~/.nvm/nvm.sh && nvm install --lts"
       args:
         executable: /bin/zsh
+
     - name: Tree sitter fam
       command: cargo install tree-sitter-cli
+
+    - name: Setup Golang
     - block:
-        - name: check if golang exists
+        - name: Check if golang exists
           stat:
             path: /usr/local/go
           register: golang
-        - name: "Get golang"
-          get_url:
-            url: https://go.dev/dl/go1.20.linux-amd64.tar.gz
-            dest: "./go.tar.gz"
-          when: golang.stat.exists == false
-        - name: "install golang"
-          become: yes
-          become_user: root
-          unarchive:
-            src: ./go.tar.gz
-            dest: /usr/local
+
+        - block:
+            - name: "Download golang"
+              get_url:
+                url: https://go.dev/dl/go1.20.linux-amd64.tar.gz
+                dest: "./go.tar.gz"
+            - name: "install golang"
+              become: yes
+              become_user: root
+              unarchive:
+                src: ./go.tar.gz
+                dest: /usr/local
           when: golang.stat.exists == false

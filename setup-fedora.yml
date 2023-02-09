@@ -157,22 +157,7 @@
             - name: Install neovim
               become: yes
               command: mv nvim /usr/local/bin
-
           when: nvim.rc != 0
-
-    - name: Setup Packer
-    - block:
-        - name: Check if packer exists
-          stat:
-            path: "~/.local/share/nvim/site/pack/packer/start/packer.nvim"
-          register: packer
-
-        - name: Clone Packer
-          git:
-            repo: https://github.com/wbthomason/packer.nvim
-            dest: ~/.local/share/nvim/site/pack/packer/start/packer.nvim
-            depth: 1
-      when: packer.stat.exists == false
 
     - name: Copy dotfiles
       shell: cp {{ item }} ~/

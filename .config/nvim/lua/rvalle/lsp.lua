@@ -3,7 +3,26 @@ if not okmason then
 	return
 end
 
-masonlsp.setup()
+masonlsp.setup({
+	ensure_installed = {
+		"sumneko_lua",
+		"pyright",
+		"bashls",
+		"tsserver",
+		"rust_analyzer",
+		"gopls",
+		"prismals",
+		"yamlls",
+		"ansiblels",
+		"jsonls",
+		"stylua",
+		"clang_format",
+		"prismaFmt",
+		"prettier",
+		"rustfmt",
+		"yamlfmt",
+	},
+})
 
 local lspconfig = require("lspconfig")
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
@@ -37,6 +56,7 @@ lspconfig.rust_analyzer.setup(config({
 }))
 lspconfig.gopls.setup(config())
 lspconfig.prismals.setup(config())
+lspconfig.ansiblels.setup(config())
 lspconfig.yamlls.setup(config())
 lspconfig.jsonls.setup(config())
 

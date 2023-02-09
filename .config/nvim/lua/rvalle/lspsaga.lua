@@ -30,5 +30,4 @@ saga.setup({
 	},
 })
 
-nnoremap("gd", "<cmd>Lspsaga lsp_finder<CR>")
 nnoremap("gp", "<cmd>Lspsaga peek_definition<CR>")

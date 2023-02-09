@@ -3,6 +3,8 @@ if not ok_tokyooooo then
 	return
 end
 
+local colors = require("tokyonight.colors")
+
 tokyo.setup({
 	style = "moon",
 	terminal_colors = true,
@@ -36,6 +38,15 @@ tokyo.setup({
 		-- Cursor line black
 		hl.CursorLine = {
 			bg = c.bg_dark,
+		}
+		hl.LineNr = {
+			fg = c.orange,
+		}
+		hl.LineNrAbove = {
+			fg = c.fg_dark,
+		}
+		hl.LineNrBelow = {
+			fg = c.fg_dark,
 		}
 	end,
 })

@@ -1,6 +1,6 @@
 local ok, oil = pcall(require, "oil")
 if not ok then
-	return
+	return vim.notify("Oil not installed")
 end
 
 oil.setup({

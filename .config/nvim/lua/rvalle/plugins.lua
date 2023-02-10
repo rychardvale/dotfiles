@@ -110,7 +110,6 @@ require("lazy").setup({
 	},
 	"tpope/vim-fugitive",
 	"ThePrimeagen/git-worktree.nvim",
-	"ThePrimeagen/harpoon",
 	"stevearc/oil.nvim",
 
 	-- Themmes

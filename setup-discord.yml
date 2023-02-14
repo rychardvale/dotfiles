@@ -1,0 +1,10 @@
+- name: Prepare stuff
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Install discord
+      unarchive:
+        src: https://discord.com/api/download/stable?platform=linux&format=tar.gz
+        dest: "./discord"
+        remote_src: yes
+

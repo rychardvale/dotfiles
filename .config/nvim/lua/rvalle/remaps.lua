@@ -20,6 +20,9 @@ nnoremap("N", "Nzz")
 nnoremap("<leader>pv", ":Oil --float<CR>")
 nnoremap("<leader>D", ":TroubleToggle<CR>")
 
+-- let me be
+inoremap("<C-c>", "<ESC>")
+
 -- debugger
 nnoremap("<F5>", ":lua require'dap'.toggle_breakpoint()<CR>")
 nnoremap("<F8>", ":lua require'dap'.continue()<CR>")
@@ -66,3 +69,5 @@ nnoremap("K", function()
 	vim.lsp.buf.hover(bufopts)
 end)
 nnoremap("gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
+nnoremap("<C-[>", "<cmd>lua vim.diagnostic.goto_prev()<CR>")
+nnoremap("<C-]>", "<cmd>lua vim.diagnostic.goto_next()<CR>")

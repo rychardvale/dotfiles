@@ -32,6 +32,7 @@ alias pbcopy='xclip -selection clipboard'
 alias pbpaste='xclip -selection clipboard -o'
 alias wificonnect='sudo nmcli --ask dev wifi connect'
 alias wifilist='nmcli dev wifi list'
+alias nvim='vim'
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -79,7 +80,7 @@ fshow_preview() {
             --ansi --preview="$_viewGitLogLine" \
                 --header "enter to view, alt-y to copy hash" \
                 --bind "enter:execute:$_viewGitLogLine   | less -R" \
-                --bind "alt-y:execute:$_gitLogLineToHash | xclip"
+                --bind "alt-y:execute:$_gitLogLineToHash | xclip -sel clip"
 }
 
 # changes dir with fzf

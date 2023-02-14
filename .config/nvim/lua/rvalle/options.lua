@@ -26,5 +26,15 @@ o.wrap = false
 o.swapfile = false
 o.undofile = true
 
+o.list = true
+o.listchars = {
+    tab = "→ ",
+    eol = "¬",
+    trail = "⋅",
+    extends = "❯",
+    precedes = "❮",
+}
+
+o.showbreak = "↪"
 o.relativenumber = true
 o.number = true

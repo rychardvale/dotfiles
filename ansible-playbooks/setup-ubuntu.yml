@@ -156,7 +156,6 @@
             dest: "~/.local/bin/kitty"
             state: link
           when: kittylink.stat.exists == false
-        
 
     - name: copy fonts
       command: "cp -r ./.fonts ~/"
@@ -206,7 +205,7 @@
               get_url:
                 url: https://sh.rustup.rs
                 dest: "./cargo.sh"
-                  
+
             - name: Install cargo
               shell:
                 cmd: "./cargo.sh -y"
@@ -225,10 +224,9 @@
                 url: https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
                 dest: "./nvim"
                 mode: 0755
-
             - name: Install neovim
               become: yes
-              command: mv nvim /usr/local/bin
+              command: mv nvim ~/.local/bin
           when: nvim.rc != 0
 
     - name: Copy dotfiles
@@ -280,15 +278,12 @@
             path: /usr/local/go
           register: golang
 
-        - block:
-            - name: "Download golang"
-              get_url:
-                url: https://go.dev/dl/go1.20.linux-amd64.tar.gz
-                dest: "./go.tar.gz"
-            - name: "install golang"
-              become: yes
-              become_user: root
-              unarchive:
-                src: ./go.tar.gz
-                dest: /usr/local
-          when: golang.stat.exists == false
+    - block:
+        - name: "install golang"
+          become: yes
+          become_user: root
+          unarchive:
+            src: https://go.dev/dl/go1.20.linux-amd64.tar.gz
+            dest: /usr/local
+            remote_src: yes 
+      when: golang.stat.exists == false

@@ -38,6 +38,14 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
+bg () {
+	if [ ! -z "$1" ]; then
+		feh --bg-fill -Z "$HOME/bg/bg$1.jpg"
+	else
+		feh --bg-fill -Z -z "$HOME/bg/"
+	fi
+}
+
 # fzf checkout branches
 fbr() {
   local branches branch

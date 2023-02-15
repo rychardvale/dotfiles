@@ -272,18 +272,18 @@
       command: cargo install tree-sitter-cli
       when: treesitter.rc != 0
 
+    - name: Check if golang exists
+      stat:
+        path: /usr/local/go
+      register: golang
     - block:
-        - name: Check if golang exists
-          stat:
-            path: /usr/local/go
-          register: golang
+        - name: Get go latest version
+          shell: curl "https://go.dev/VERSION?m=text"
+          register: goversion
 
-    - block:
-        - name: "install golang"
-          become: yes
-          become_user: root
+        - name: Installing golang {{ goversion.stdout }}
           unarchive:
-            src: https://go.dev/dl/go1.20.linux-amd64.tar.gz
+            src: https://go.dev/dl/{{ goversion.stdout }}.linux-amd64.tar.gz
             dest: /usr/local
-            remote_src: yes 
+            remote_src: yes
       when: golang.stat.exists == false

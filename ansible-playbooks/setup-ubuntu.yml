@@ -222,20 +222,17 @@
               become: yes
               get_url:
                 url: https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
-                dest: "./nvim"
+                dest: "~/.local/bin/nvim"
                 mode: 0755
-            - name: Install neovim
-              become: yes
-              command: mv nvim ~/.local/bin
           when: nvim.rc != 0
 
     - name: Copy dotfiles
       shell: cp {{ item }} ~/
       loop:
-        - .zshrc
-        - .zshenv
-        - .tmux.conf
-        - .bashrc
+        - ../.zshrc
+        - ../.zshenv
+        - ../.tmux.conf
+        - ../.bashrc
 
     - name: copy bg
       command: cp -r ./bg ~/
@@ -253,7 +250,7 @@
 
     - name: copy .config stuff
       shell:
-        cmd: "cp -r ./.config/* ~/.config/"
+        cmd: "cp -r ../.config/* ~/.config/"
 
     - name: Install lts
       become: yes

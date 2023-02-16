@@ -32,7 +32,7 @@ alias pbcopy='xclip -selection clipboard'
 alias pbpaste='xclip -selection clipboard -o'
 alias wificonnect='sudo nmcli --ask dev wifi connect'
 alias wifilist='nmcli dev wifi list'
-alias nvim='vim'
+alias vim='nvim'
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm

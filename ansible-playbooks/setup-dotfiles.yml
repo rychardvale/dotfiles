@@ -2,14 +2,6 @@
   hosts: localhost
   connection: local
   tasks: 
-    - name: ls
-      shell:
-        cmd: "ls"
-      register: lsls
-    - name: debug
-      debug:
-        var: lsls
-
     - name: Copy dotfiles
       shell: cp {{ item }} ~/
       loop:

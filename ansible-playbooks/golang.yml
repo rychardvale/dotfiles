@@ -1,0 +1,17 @@
+- name: Setup Go
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Remove previous version
+      become: yes
+      file:
+        state: "absent"
+        path: /usr/local/go
+    - name: Get go latest version
+      shell: curl "https://go.dev/VERSION?m=text"
+      register: goversion
+    - name: Installing golang {{ goversion.stdout }}
+      unarchive:
+        src: https://go.dev/dl/{{ goversion.stdout }}.linux-amd64.tar.gz
+        dest: /usr/local
+        remote_src: yes

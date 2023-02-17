@@ -1,0 +1,43 @@
+- name: Picom Setup
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Install Picom deps
+      become: yes
+      dnf:
+        name:
+          - dbus-devel
+          - gcc
+          - git
+          - ninja-build
+          - libconfig-devel
+          - libdrm-devel
+          - libev-devel
+          - libX11-devel
+          - libX11-xcb
+          - libXext-devel
+          - libxcb-devel
+          - libGL-devel
+          - libEGL-devel
+          - meson
+          - pcre2-devel
+          - pixman-devel
+          - uthash-devel
+          - xcb-util-image-devel
+          - xcb-util-renderutil-devel
+          - xorg-x11-proto-devel
+    - name: Clone picom repo
+      git:
+        repo: https://github.com/yshui/picom
+        dest: ./picom
+        recursive: yes
+        update: yes
+    - name: Build and Install picom
+      become: yes
+      shell: "cd ./picom; meson setup --buildtype=release . build && ninja -C build
+        install"
+    - name: Remove picom git
+      become: yes
+      file:
+        state: "absent"
+        path: "./picom"

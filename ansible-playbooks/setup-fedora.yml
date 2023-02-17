@@ -7,7 +7,6 @@
       dnf:
         state: present
         name:
-          - vim
           - htop
           - curl
           - xsel
@@ -25,42 +24,7 @@
           - python3
           - ninja-build
 
-    - name: Check picom
-      stat:
-        path: "/usr/bin/picom"
-      register: picom
-    - block:
-        - name: Install Picom deps
-          dnf:
-            name:
-              - dbus-devel 
-              - gcc 
-              - git 
-              - libconfig-devel 
-              - libdrm-devel 
-              - libev-devel
-              - libX11-devel 
-              - libX11-xcb 
-              - libXext-devel 
-              - libxcb-devel 
-              - libGL-devel 
-              - libEGL-devel
-              - meson 
-              - pcre2-devel 
-              - pixman-devel 
-              - uthash-devel 
-              - xcb-util-image-devel
-              - xcb-util-renderutil-devel 
-              - xorg-x11-proto-devel
-        - name: Clone picom repo
-          git:
-            repo: https://github.com/yshui/picom
-            dest: ./picom
-            recursive: yes
-            update: yes
-        - name: Build and Install picom
-          shell: "cd ./picom; meson setup --buildtype=release . build && ninja -C build install"
-      when: picom.stat.exists == false
+    - import_playbok: "./picom.yml"
 
     - name: Changing Default Shell to ZSH
       become: yes
@@ -157,32 +121,11 @@
             cmd: "./cargo.sh -y"
       when: cargo.rc != 0
 
-    - name: Check if neovim exists
-      command: which nvim
-      ignore_errors: true
-      register: nvim
-    - block:
-        - name: Download neovim
-          become: yes
-          get_url:
-            url: https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
-            dest: "./nvim"
-            mode: 0755
-        - name: Install neovim
-          become: yes
-          command: mv nvim /usr/local/bin
-      when: nvim.rc != 0
-
-    - name: Copy dotfiles
-      shell: cp {{ item }} ~/
-      loop:
-        - .zshrc
-        - .zshenv
-        - .tmux.conf
-        - .bashrc
+    - import_playbok: "./nvim.yml"
 
     - name: copy bg
       command: cp -r ./bg ~/
+
 
     - name: Check if .config exists
       stat:
@@ -194,9 +137,7 @@
         state: directory
       when: config.stat.exists == false
 
-    - name: copy .config stuff
-      shell:
-        cmd: "cp -r ./.config/* ~/.config/"
+    - import_playbok: "./setup-dotfiles.yml"
 
     - name: Install lts
       become: yes
@@ -220,13 +161,5 @@
         path: /usr/local/go
       register: golang
     - block:
-        - name: Get go latest version
-          shell: curl "https://go.dev/VERSION?m=text"
-          register: goversion
-
-        - name: Installing golang {{ goversion.stdout }}
-          unarchive:
-            src: https://go.dev/dl/{{ goversion.stdout }}.linux-amd64.tar.gz
-            dest: /usr/local
-            remote_src: yes
+      - import_playbok: "./golang.yml"
       when: golang.stat.exists == false

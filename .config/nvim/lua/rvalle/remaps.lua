@@ -17,7 +17,7 @@ nnoremap("<C-u>", "<C-u>zz")
 nnoremap("<C-d>", "<C-d>zz")
 nnoremap("n", "nzz")
 nnoremap("N", "Nzz")
-nnoremap("<leader>pv", ":Oil<CR>")
+nnoremap("<leader>pv", ":Oil --float<CR>")
 nnoremap("<leader>D", ":TroubleToggle<CR>")
 
 -- let me be

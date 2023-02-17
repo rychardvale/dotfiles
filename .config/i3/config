@@ -28,7 +28,7 @@ exec "xset r rate 200 25"
 exec --no-startup-id feh --bg-fill -Z ~/bg/
 
 # Picom with blur
-exec "picom -b --experimental-backends --config ~/.config/picom.conf"
+exec "picom -b --config ~/.config/picom.conf"
 
 # polybar setup
 # exec "~/.config/bar/launch.sh"

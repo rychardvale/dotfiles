@@ -38,12 +38,18 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
+# changes dir with fzf
+fdir() {
+  local dir
+  dir=$(find ${1:-.} -path '*/\.*' -prune \
+	  -o -type d -print 2> /dev/null | fzf +m) &&
+  cd "$dir"
+}
+
 bg () {
-	if [ ! -z "$1" ]; then
-		feh --bg-fill -Z "$HOME/bg/bg$1.jpg"
-	else
-		feh --bg-fill -Z -z "$HOME/bg/"
-	fi
+	local imgpath
+	imgpath=$(find $HOME/bg/* -print 2> /dev/null | fzf +m --preview="catimg -w$COLUMNS {}") &&
+		feh --bg-fill -Z "$imgpath"
 }
 
 # fzf checkout branches
@@ -91,13 +97,6 @@ fshow_preview() {
                 --bind "alt-y:execute:$_gitLogLineToHash | xclip -sel clip"
 }
 
-# changes dir with fzf
-fdir() {
-  local dir
-  dir=$(find ${1:-.} -path '*/\.*' -prune \
-	  -o -type d -print 2> /dev/null | fzf +m) &&
-  cd "$dir"
-}
 
 # shows which proccess you can kill with fzf
 fkill() {

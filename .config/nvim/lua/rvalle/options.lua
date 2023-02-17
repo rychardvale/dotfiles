@@ -25,13 +25,14 @@ o.sidescrolloff = 10
 o.wrap = false
 o.swapfile = false
 o.undofile = true
+o.completeopt = "menuone,noselect"
 
 o.list = true
 o.listchars = {
-    tab = "→ ",
-    trail = "⋅",
-    extends = "❯",
-    precedes = "❮",
+	tab = "→ ",
+	trail = "⋅",
+	extends = "❯",
+	precedes = "❮",
 }
 
 o.relativenumber = true

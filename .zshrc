@@ -94,8 +94,7 @@ fshow_preview() {
 # changes dir with fzf
 fdir() {
   local dir
-  dir=$(find ${1:-.} -path '*/\.*' -prune \
-                  -o -type d -print 2> /dev/null | fzf +m) &&
+  dir=$(find ${1:-.} -type d -print 3> /dev/null | fzf +m) &&
   cd "$dir"
 }
 

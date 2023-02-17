@@ -24,7 +24,7 @@
           - python3
           - ninja-build
 
-    - import_playbok: "./picom.yml"
+    - import_playbook: "./picom.yml"
 
     - name: Changing Default Shell to ZSH
       become: yes
@@ -121,7 +121,7 @@
             cmd: "./cargo.sh -y"
       when: cargo.rc != 0
 
-    - import_playbok: "./nvim.yml"
+    - import_playbook: "./nvim.yml"
 
     - name: copy bg
       command: cp -r ./bg ~/
@@ -137,7 +137,7 @@
         state: directory
       when: config.stat.exists == false
 
-    - import_playbok: "./setup-dotfiles.yml"
+    - import_playbook: "./setup-dotfiles.yml"
 
     - name: Install lts
       become: yes
@@ -161,5 +161,5 @@
         path: /usr/local/go
       register: golang
     - block:
-      - import_playbok: "./golang.yml"
+      - import_playbook: "./golang.yml"
       when: golang.stat.exists == false

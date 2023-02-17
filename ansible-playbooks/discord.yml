@@ -2,16 +2,16 @@
   hosts: localhost
   connection: local
   tasks:
+    - name: remove old discord files
+      file:
+        path: "~/.local/Discord"
+        state: "absent"
+
     - name: Get discord tar
       unarchive:
         src: https://discord.com/api/download/stable?platform=linux&format=tar.gz
         dest: "~/.local/"
         remote_src: yes
-
-    - name: remove old discord files
-      file:
-        path: "~/.local/Discord"
-        state: "absent"
 
     - name: Link to bin
       file:

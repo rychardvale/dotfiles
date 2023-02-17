@@ -11,6 +11,7 @@
       shell: curl "https://go.dev/VERSION?m=text"
       register: goversion
     - name: Installing golang {{ goversion.stdout }}
+      become: yes
       unarchive:
         src: https://go.dev/dl/{{ goversion.stdout }}.linux-amd64.tar.gz
         dest: /usr/local

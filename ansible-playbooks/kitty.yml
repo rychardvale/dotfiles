@@ -1,0 +1,23 @@
+- name: Prepare stuff
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: remove kitty
+      file:
+        state: "absent"
+        path: "~/.local/kitty.app"
+    - name: get a kitty
+      get_url:
+        url: https://sw.kovidgoyal.net/kitty/installer.sh
+        dest: "./kitty-installer.sh"
+    - name: install kitty
+      command: /bin/sh "./kitty-installer.sh"
+    - name: Link Kitty
+      file:
+        src: "~/.local/kitty.app/bin/kitty"
+        dest: "~/.local/bin/kitty"
+        state: link
+    - name: remove kitty intaller
+      file:
+        state: "absent"
+        path: "./kitty-installer.sh"

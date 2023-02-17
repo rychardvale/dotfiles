@@ -1,0 +1,13 @@
+- name: Prepare stuff
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Remove old nvim
+      file:
+        path: "~/.local/bin/nvim"
+        state: 'absent'
+    - name: Download nvim
+      get_url:
+        url: https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
+        dest: "~/.local/bin/nvim"
+        mode: 0755

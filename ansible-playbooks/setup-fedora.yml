@@ -1,0 +1,232 @@
+- name: Prepare stuff
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: the gang
+      become: yes
+      dnf:
+        state: present
+        name:
+          - vim
+          - htop
+          - curl
+          - xsel
+          - xclip
+          - "@Development tools"
+          - "Development Libraries"
+          - tmux
+          - zsh
+          - ripgrep
+          - fzf
+          - fd-find
+          - feh
+          - i3
+          - maim
+          - python3
+          - ninja-build
+
+    - name: Check picom
+      stat:
+        path: "/usr/bin/picom"
+      register: picom
+    - block:
+        - name: Install Picom deps
+          dnf:
+            name:
+              - dbus-devel 
+              - gcc 
+              - git 
+              - libconfig-devel 
+              - libdrm-devel 
+              - libev-devel
+              - libX11-devel 
+              - libX11-xcb 
+              - libXext-devel 
+              - libxcb-devel 
+              - libGL-devel 
+              - libEGL-devel
+              - meson 
+              - pcre2-devel 
+              - pixman-devel 
+              - uthash-devel 
+              - xcb-util-image-devel
+              - xcb-util-renderutil-devel 
+              - xorg-x11-proto-devel
+        - name: Clone picom repo
+          git:
+            repo: https://github.com/yshui/picom
+            dest: ./picom
+            recursive: yes
+            update: yes
+        - name: Build and Install picom
+          shell: "cd ./picom; meson setup --buildtype=release . build && ninja -C build install"
+      when: picom.stat.exists == false
+
+    - name: Changing Default Shell to ZSH
+      become: yes
+      user:
+        name: "{{ ansible_user_id }}"
+        shell: /bin/zsh
+
+    - name: check if ohmyzsh
+      stat:
+        path: "~/.oh-my-zsh"
+      register: ohmyzsh
+      block:
+        - name: Download OhMyZsh
+          get_url:
+            url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+            dest: "./ohmyzsh.sh"
+            mode: 0755
+        - name: Install ohmyzsh
+          shell:
+            cmd: "./ohmyzsh.sh -y"
+      when: ohmyzsh.stat.exists == false
+
+    - name: check .local/bin
+      stat:
+        path: "~/.local/bin"
+      register: localbin
+    - name: create .local/bin
+      file:
+        path: "~/.local/bin"
+        state: directory
+      when: localbin.stat.exists == false
+
+    - name: check if kitty exists
+      stat:
+        path: "~/.local/kitty.app"
+      register: kitty
+    - block:
+        - name: get a kitty
+          get_url:
+            url: https://sw.kovidgoyal.net/kitty/installer.sh
+            dest: "./kitty-installer.sh"
+        - name: install kitty
+          command: /bin/sh "./kitty-installer.sh"
+        - name: Link Kitty
+          file:
+            src: "~/.local/kitty.app/bin/kitty"
+            dest: "~/.local/bin/kitty"
+            state: link
+      when: kitty.stat.exists == false
+
+    - name: copy fonts
+      command: "cp -r ./.fonts ~/"
+
+    - name: check powerlevel installed
+      stat:
+        path: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/themes/powerlevel10k"
+      register: powerlevel
+    - name: get sweet themes
+      git:
+        repo: https://github.com/romkatv/powerlevel10k.git
+        dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/themes/powerlevel10k"
+        depth: 1
+      when: powerlevel.stat.exists == false
+
+    - name: chekc if nvm exists
+      become: yes
+      become_user: root
+      shell: "source {{ ansible_env.HOME }}/.nvm/nvm.sh && nvm -v"
+      args:
+        executable: /bin/zsh
+      ignore_errors: true
+      register: nvmstuff
+    - block:
+        - name: Download nvm
+          get_url:
+            url: https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh
+            dest: "./nvm.sh"
+        - name: install nvm
+          command: bash ./nvm.sh
+      when: nvmstuff.rc != 0
+
+    - name: check if cargo exsits
+      command: which cargo
+      ignore_errors: true
+      register: cargo
+    - block:
+        - name: download cargo
+          become: yes
+          get_url:
+            url: https://sh.rustup.rs
+            dest: "./cargo.sh"
+        - name: Install cargo
+          shell:
+            cmd: "./cargo.sh -y"
+      when: cargo.rc != 0
+
+    - name: Check if neovim exists
+      command: which nvim
+      ignore_errors: true
+      register: nvim
+    - block:
+        - name: Download neovim
+          become: yes
+          get_url:
+            url: https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+            dest: "./nvim"
+            mode: 0755
+        - name: Install neovim
+          become: yes
+          command: mv nvim /usr/local/bin
+      when: nvim.rc != 0
+
+    - name: Copy dotfiles
+      shell: cp {{ item }} ~/
+      loop:
+        - .zshrc
+        - .zshenv
+        - .tmux.conf
+        - .bashrc
+
+    - name: copy bg
+      command: cp -r ./bg ~/
+
+    - name: Check if .config exists
+      stat:
+        path: ~/.config
+      register: config
+    - name: create .config
+      file:
+        path: ~/.config
+        state: directory
+      when: config.stat.exists == false
+
+    - name: copy .config stuff
+      shell:
+        cmd: "cp -r ./.config/* ~/.config/"
+
+    - name: Install lts
+      become: yes
+      become_user: "{{ ansible_user_id }}"
+      shell: "source ~/.nvm/nvm.sh && nvm install --lts"
+      args:
+        executable: /bin/zsh
+
+    - name: Check treesitter
+      shell:
+        cmd: which tree-sitter
+      ignore_errors: true
+      register: treesitter
+
+    - name: Install treesitter
+      command: cargo install tree-sitter-cli
+      when: treesitter.rc != 0
+
+    - name: Check if golang exists
+      stat:
+        path: /usr/local/go
+      register: golang
+    - block:
+        - name: Get go latest version
+          shell: curl "https://go.dev/VERSION?m=text"
+          register: goversion
+
+        - name: Installing golang {{ goversion.stdout }}
+          unarchive:
+            src: https://go.dev/dl/{{ goversion.stdout }}.linux-amd64.tar.gz
+            dest: /usr/local
+            remote_src: yes
+      when: golang.stat.exists == false

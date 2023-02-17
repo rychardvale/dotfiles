@@ -1,0 +1,22 @@
+- name: Prepare stuff
+  hosts: localhost
+  connection: local
+  tasks: 
+    - name: ls
+      shell:
+        cmd: "ls"
+      register: lsls
+    - name: debug
+      debug:
+        var: lsls
+
+    - name: Copy dotfiles
+      shell: cp {{ item }} ~/
+      loop:
+        - ../.zshrc
+        - ../.zshenv
+        - ../.tmux.conf
+        - ../.bashrc
+    - name: copy .config stuff
+      shell:
+        cmd: "cp -r ../.config/* ~/.config/"

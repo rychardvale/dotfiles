@@ -5,41 +5,68 @@
 
     - name: the gang
       become: yes
-      dnf:
-        name: "{{ item }}"
+      apt:
+        name: 
+          - vim
+          - htop
+          - curl
+          - make
+          - xsel
+          - xclip
+          - build-essential
+          - tmux
+          - zsh
+          - ripgrep
+          - fzf
+          - fd-find
+          - feh
+          - maim
+          - zsh-autosuggestions
+          - fuse
+          - libfuse2
+          - python3
+        install_recommends: yes
         state: present
       loop:
-        - vim
-        - htop
-        - curl
-        - xsel
-        - xclip
-        - "@Development tools"
-        - "Development Libraries"
-        - tmux
-        - zsh
-        - ripgrep
-        - fzf
-        - fd-find
-        - feh
-        - i3
-        - maim
-        - python3
-        - ninja-build
 
-    - name: Install Picom
-      block: 
+    - block: 
         - name: Check picom
           stat:
-            path: "/usr/bin/picom"
+            path: "/usr/local/bin/picom"
           register: picom
 
-          block:
+        - block:
             - name: Install Picom deps
-              dnf:
-                name: "dbus-devel gcc git libconfig-devel libdrm-devel libev-devel libX11-devel libX11-xcb 
-                  libXext-devel libxcb-devel libGL-devel libEGL-devel meson pcre2-devel pixman-devel 
-                  uthash-devel xcb-util-image-devel xcb-util-renderutil-devel xorg-x11-proto-devel"
+              become: yes
+              become_user: root
+              apt:
+                name:
+                  - libxext-dev 
+                  - libxcb1-dev 
+                  - libxcb-damage0-dev 
+                  - libxcb-dpms0-dev 
+                  - libxcb-xfixes0-dev 
+                  - libxcb-shape0-dev 
+                  - libxcb-render-util0-dev 
+                  - libxcb-render0-dev 
+                  - libxcb-randr0-dev 
+                  - libxcb-composite0-dev 
+                  - libxcb-image0-dev 
+                  - libxcb-present-dev 
+                  - libxcb-glx0-dev 
+                  - libpixman-1-dev 
+                  - libdbus-1-dev 
+                  - libconfig-dev 
+                  - libgl-dev 
+                  - libegl-dev 
+                  - libpcre2-dev 
+                  - libevdev-dev 
+                  - uthash-dev 
+                  - libev-dev 
+                  - libx11-xcb-dev 
+                  - meson
+                install_recommends: yes
+                state: present
             - name: Clone picom repo
               git:
                 repo: https://github.com/yshui/picom
@@ -47,7 +74,7 @@
                 recursive: yes
                 update: yes
             - name: Build and Install picom
-              shell: "cd ./picom; ninja -C build install"
+              shell: "cd ./picom; meson setup --buildtype=release . build && ninja -C build install"
           when: picom.stat.exists == false
 
     - name: Changing Default Shell to ZSH
@@ -56,13 +83,12 @@
         name: "{{ ansible_user_id }}"
         shell: /bin/zsh
 
-    - name: "Install OhMyZSH"
-      block: 
+    - block: 
         - name: check if ohmyzsh
           stat:
             path: "~/.oh-my-zsh"
           register: ohmyzsh
-          block: 
+        - block: 
             - name: Download OhMyZsh
               get_url:
                 url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
@@ -73,7 +99,18 @@
                 cmd: "./ohmyzsh.sh -y"
           when: ohmyzsh.stat.exists == false
 
-    - name: Setup Local Binaries
+    - block:
+        - name: Check if autosuggestions exists
+          stat:
+            path: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+          register: zshsugg
+
+        - name: Install zsh-autosuggestions
+          git:
+            repo: https://github.com/zsh-users/zsh-autosuggestions 
+            dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+          when: zshsugg.stat.exists == false
+
     - block:
         - name: check .local/bin
           stat:
@@ -85,12 +122,12 @@
             state: directory
           when: localbin.stat.exists == false
 
-    - name: Setup Kitty
     - block: 
         - name: check if kitty exists
           stat:
             path: "~/.local/kitty.app"
           register: kitty
+
 
         - block:
             - name: get a kitty
@@ -108,10 +145,21 @@
                 state: link
           when: kitty.stat.exists == false
 
+        - name: Check if link exists
+          stat:
+            path: "~/.local/bin/kitty"
+          register: kittylink
+
+        - name: Link Kitty
+          file:
+            src: "~/.local/kitty.app/bin/kitty"
+            dest: "~/.local/bin/kitty"
+            state: link
+          when: kittylink.stat.exists == false
+
     - name: copy fonts
       command: "cp -r ./.fonts ~/"
 
-    - name: Setup Powerlevel
     - block:
         - name: check powerlevel installed
           stat:
@@ -124,7 +172,6 @@
             depth: 1
           when: powerlevel.stat.exists == false
 
-    - name: Setup NVM
     - block:
         - name: chekc if nvm exists
           become: yes
@@ -145,25 +192,25 @@
               command: bash ./nvm.sh
           when: nvmstuff.rc != 0
 
-    - name: Setup Cargo
     - block:
         - name: check if cargo exsits
-          command: which cargo
+          shell: 
+            cmd: which cargo
           ignore_errors: true
           register: cargo
 
-        - name: download cargo
-          become: yes
-          get_url:
-            url: https://sh.rustup.rs
-            dest: "./cargo.sh"
-              
-        - name: Install cargo
-          shell:
-            cmd: "./cargo.sh -y"
-      when: cargo.rc != 0
+        - block: 
+            - name: download cargo
+              become: yes
+              get_url:
+                url: https://sh.rustup.rs
+                dest: "./cargo.sh"
 
-    - name: Setup Neovim
+            - name: Install cargo
+              shell:
+                cmd: "./cargo.sh -y"
+          when: cargo.rc != 0
+
     - block:
         - name: Check if neovim exists
           command: which nvim
@@ -175,21 +222,17 @@
               become: yes
               get_url:
                 url: https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
-                dest: "./nvim"
+                dest: "~/.local/bin/nvim"
                 mode: 0755
-
-            - name: Install neovim
-              become: yes
-              command: mv nvim /usr/local/bin
           when: nvim.rc != 0
 
     - name: Copy dotfiles
       shell: cp {{ item }} ~/
       loop:
-        - .zshrc
-        - .zshenv
-        - .tmux.conf
-        - .bashrc
+        - ../.zshrc
+        - ../.zshenv
+        - ../.tmux.conf
+        - ../.bashrc
 
     - name: copy bg
       command: cp -r ./bg ~/
@@ -207,7 +250,7 @@
 
     - name: copy .config stuff
       shell:
-        cmd: "cp -r ./.config/* ~/.config/"
+        cmd: "cp -r ../.config/* ~/.config/"
 
     - name: Install lts
       become: yes
@@ -216,25 +259,28 @@
       args:
         executable: /bin/zsh
 
-    - name: Tree sitter fam
+    - name: Check treesitter
+      shell:
+        cmd: which tree-sitter
+      ignore_errors: true
+      register: treesitter
+
+    - name: Install treesitter
       command: cargo install tree-sitter-cli
+      when: treesitter.rc != 0
 
-    - name: Setup Golang
+    - name: Check if golang exists
+      stat:
+        path: /usr/local/go
+      register: golang
     - block:
-        - name: Check if golang exists
-          stat:
-            path: /usr/local/go
-          register: golang
+        - name: Get go latest version
+          shell: curl "https://go.dev/VERSION?m=text"
+          register: goversion
 
-        - block:
-            - name: "Download golang"
-              get_url:
-                url: https://go.dev/dl/go1.20.linux-amd64.tar.gz
-                dest: "./go.tar.gz"
-            - name: "install golang"
-              become: yes
-              become_user: root
-              unarchive:
-                src: ./go.tar.gz
-                dest: /usr/local
-          when: golang.stat.exists == false
+        - name: Installing golang {{ goversion.stdout }}
+          unarchive:
+            src: https://go.dev/dl/{{ goversion.stdout }}.linux-amd64.tar.gz
+            dest: /usr/local
+            remote_src: yes
+      when: golang.stat.exists == false

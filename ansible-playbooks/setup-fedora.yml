@@ -24,6 +24,16 @@
           - python3
           - ninja-build
 
+    - name: Check tmux plugin
+      stat:
+        path: "{{ ansible_env.HOME }}/.tmux/plugins/tpm"
+      register: tpm
+    - name: Install tmux plugin manager
+      git:
+        repo: git clone https://github.com/tmux-plugins/tpm 
+        dest: "{{ ansible_env.HOME }}/.tmux/plugins/tpm"
+      when: tpm.stat.exists == false
+
     - name: Changing Default Shell to ZSH
       become: yes
       user:

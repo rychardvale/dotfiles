@@ -12,7 +12,7 @@ vnoremap("<M-j>", ":m '>+1<CR>gv=gv") -- move down but visual
 vnoremap("<M-k>", ":m '<-2<CR>gv=gv") -- move up but visual
 nnoremap("<M-j>", ":m .+1<CR>==") -- move line down
 nnoremap("<M-k>", ":m .-2<CR>==") -- move line up
-nnoremap("<leader>h", ":nohlsearch<CR>") -- removes highlight
+nnoremap("<leader>hh", ":nohlsearch<CR>") -- removes highlight
 nnoremap("<C-u>", "<C-u>zz")
 nnoremap("<C-d>", "<C-d>zz")
 nnoremap("n", "nzz")

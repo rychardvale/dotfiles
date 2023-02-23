@@ -23,8 +23,8 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 local function config(_config)
 	return vim.tbl_deep_extend("force", {
-		capabilities = capabilities,
-	}, _config or {})
+			capabilities = capabilities,
+		}, _config or {})
 end
 
 lspconfig.pyright.setup(config())

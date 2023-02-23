@@ -1,23 +1,23 @@
-- name: Prepare stuff
+- name: Setup Kitty
   hosts: localhost
   connection: local
   tasks:
-    - name: remove kitty
+    - name: remove old kitty
       file:
         state: "absent"
         path: "~/.local/kitty.app"
-    - name: get a kitty
+    - name: get a new kitty
       get_url:
         url: https://sw.kovidgoyal.net/kitty/installer.sh
         dest: "./kitty-installer.sh"
-    - name: install kitty
+    - name: install new kitty
       command: /bin/sh "./kitty-installer.sh"
-    - name: Link Kitty
+    - name: Link new Kitty
       file:
         src: "~/.local/kitty.app/bin/kitty"
         dest: "~/.local/bin/kitty"
         state: link
-    - name: remove kitty intaller
+    - name: remove new kitty intaller
       file:
         state: "absent"
         path: "./kitty-installer.sh"

@@ -1,18 +1,18 @@
-- name: Prepare stuff
-  hosts: localhost
+- name: Setup Base
+  hosts: all
   connection: local
   tasks:
     - name: the gang
       become: yes
       dnf:
         state: present
-        name:
+        name: "{{ item }}"
+      loop:
           - htop
           - curl
           - xsel
           - xclip
           - "@Development tools"
-          - "Development Libraries"
           - tmux
           - zsh
           - ripgrep
@@ -24,8 +24,6 @@
           - python3
           - ninja-build
 
-    - import_playbook: "./picom.yml"
-
     - name: Changing Default Shell to ZSH
       become: yes
       user:
@@ -36,15 +34,19 @@
       stat:
         path: "~/.oh-my-zsh"
       register: ohmyzsh
-      block:
-        - name: Download OhMyZsh
-          get_url:
-            url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
-            dest: "./ohmyzsh.sh"
-            mode: 0755
-        - name: Install ohmyzsh
-          shell:
-            cmd: "./ohmyzsh.sh -y"
+    - block:
+      - name: Download OhMyZsh
+        get_url:
+          url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+          dest: "./ohmyzsh.sh"
+          mode: 0755
+      - name: Install ohmyzsh
+        shell:
+          cmd: "./ohmyzsh.sh -y"
+      - name: Remove ohmyzsh installer
+        file:
+          path: ./ohmyzsh.sh
+          state: absent
       when: ohmyzsh.stat.exists == false
 
     - name: check .local/bin
@@ -56,27 +58,6 @@
         path: "~/.local/bin"
         state: directory
       when: localbin.stat.exists == false
-
-    - name: check if kitty exists
-      stat:
-        path: "~/.local/kitty.app"
-      register: kitty
-    - block:
-        - name: get a kitty
-          get_url:
-            url: https://sw.kovidgoyal.net/kitty/installer.sh
-            dest: "./kitty-installer.sh"
-        - name: install kitty
-          command: /bin/sh "./kitty-installer.sh"
-        - name: Link Kitty
-          file:
-            src: "~/.local/kitty.app/bin/kitty"
-            dest: "~/.local/bin/kitty"
-            state: link
-      when: kitty.stat.exists == false
-
-    - name: copy fonts
-      command: "cp -r ./.fonts ~/"
 
     - name: check powerlevel installed
       stat:
@@ -119,13 +100,16 @@
         - name: Install cargo
           shell:
             cmd: "./cargo.sh -y"
+        - name: Remove Cargo SH
+          file:
+            path: ./cargo.sh
+            state: absent
       when: cargo.rc != 0
 
-    - import_playbook: "./nvim.yml"
-
+    - name: copy fonts
+      command: "cp -r ./.fonts ~/"
     - name: copy bg
       command: cp -r ./bg ~/
-
 
     - name: Check if .config exists
       stat:
@@ -136,8 +120,6 @@
         path: ~/.config
         state: directory
       when: config.stat.exists == false
-
-    - import_playbook: "./setup-dotfiles.yml"
 
     - name: Install lts
       become: yes
@@ -151,15 +133,21 @@
         cmd: which tree-sitter
       ignore_errors: true
       register: treesitter
-
     - name: Install treesitter
       command: cargo install tree-sitter-cli
       when: treesitter.rc != 0
 
-    - name: Check if golang exists
-      stat:
-        path: /usr/local/go
-      register: golang
-    - block:
-      - import_playbook: "./golang.yml"
-      when: golang.stat.exists == false
+- name: Install Picom
+  import_playbook: picom.yml
+
+- name: Setup nvim
+  import_playbook: nvim.yml
+
+- name: GoLang
+  import_playbook: golang.yml
+
+- name: Kitty
+  import_playbook: kitty.yml
+
+- name: Setup Dotfiles
+  import_playbook: setup-dotfiles.yml

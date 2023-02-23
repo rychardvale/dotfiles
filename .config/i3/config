@@ -25,7 +25,7 @@ exec "xrandr --output DP-0 --mode 1920x1080 --rate 144"
 exec "xset r rate 200 25"
 
 # i3 BG
-exec --no-startup-id feh --bg-fill -Z ~/bg/
+exec --no-startup-id feh --bg-fill -Z -z ~/bg/
 
 # Picom with blur
 exec "picom -b --config ~/.config/picom.conf"

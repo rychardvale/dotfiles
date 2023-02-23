@@ -33,6 +33,7 @@ alias pbpaste='xclip -selection clipboard -o'
 alias wificonnect='sudo nmcli --ask dev wifi connect'
 alias wifilist='nmcli dev wifi list'
 alias vim='nvim'
+alias vimc='vim ~/.config/'
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -124,6 +125,11 @@ tm() {
     tmux $change -t "$1" 2>/dev/null || (tmux new-session -d -s $1 && tmux $change -t "$1"); return
   fi
   session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux $change -t "$session" || echo "No sessions found."
+}
+
+tmk() {
+	local session
+	session=$(tmux ls -F "#{session_name}" 2>/dev/null | fzf) && tmux kill-session -t "$session" && echo "Session $session killed"
 }
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.

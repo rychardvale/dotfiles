@@ -37,3 +37,5 @@ o.listchars = {
 
 o.relativenumber = true
 o.number = true
+
+o.tabline = "%F"

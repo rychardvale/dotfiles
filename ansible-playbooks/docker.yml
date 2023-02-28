@@ -1,0 +1,46 @@
+- name: Setup Docker
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Remove old docker binaries
+      become: yes
+      dnf:
+        state: absent
+        name: 
+          - docker
+          - docker-client 
+          - docker-client-latest 
+          - docker-common 
+          - docker-latest 
+          - docker-latest-logrotate 
+          - docker-logrotate 
+          - docker-selinux 
+          - docker-engine-selinux 
+          - docker-engine
+
+    - name: Dnf plugins core
+      become: yes
+      dnf:
+        name: dnf-plugins-core
+
+    - name: add docker repo dnf
+      become: yes
+      shell: "sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo"
+
+    - name: Install Docker Engine
+      become: yes
+      dnf:
+        update_cache: true
+        state: latest
+        name:
+          - docker-ce 
+          - docker-ce-cli 
+          - containerd.io 
+          - docker-buildx-plugin 
+          - docker-compose-plugin
+
+    - name: Start docker service
+      become: yes
+      service:
+        name: docker
+        state: "started"

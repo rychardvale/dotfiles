@@ -1,0 +1,5 @@
+- name: Planetscale Setup
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Remove old binaries

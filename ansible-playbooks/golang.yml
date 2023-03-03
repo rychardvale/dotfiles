@@ -7,12 +7,18 @@
       file:
         state: "absent"
         path: /usr/local/go
+      when: false
+
     - name: Get go latest version
-      shell: curl "https://go.dev/VERSION?m=text"
+      uri:
+        url: https://go.dev/VERSION?m=text
+        return_content: true
       register: goversion
-    - name: Installing golang {{ goversion.stdout }}
+
+    - name: Installing golang {{ goversion.content }}
       become: yes
       unarchive:
-        src: https://go.dev/dl/{{ goversion.stdout }}.linux-amd64.tar.gz
+        src: https://go.dev/dl/{{ goversion.content }}.linux-amd64.tar.gz
         dest: /usr/local
         remote_src: yes
+      when: false

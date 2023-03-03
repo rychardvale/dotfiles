@@ -42,14 +42,13 @@ export NVM_DIR="$HOME/.nvm"
 # changes dir with fzf
 fdir() {
   local dir
-  dir=$(find ${1:-.} -path '*/\.*' -prune \
-	  -o -type d -print 2> /dev/null | fzf +m) &&
+  dir=$(fd --exclude 'node_modules' -t d . ${1:-.} 2> /dev/null | fzf +m) &&
   cd "$dir"
 }
 
 bg () {
 	local imgpath
-	imgpath=$(find $HOME/bg/* -print 2> /dev/null | fzf +m --preview="catimg -w$COLUMNS {}") &&
+	imgpath=$(fd . $HOME/bg/ --type f 2> /dev/null | fzf +m --preview="catimg -w$COLUMNS {}") &&
 		feh --bg-fill -Z "$imgpath"
 }
 

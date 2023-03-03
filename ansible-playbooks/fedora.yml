@@ -131,13 +131,6 @@
         state: directory
       when: config.stat.exists == false
 
-    - name: Install lts
-      become: yes
-      become_user: "{{ ansible_user_id }}"
-      shell: "source ~/.nvm/nvm.sh && nvm install --lts"
-      args:
-        executable: /bin/zsh
-
     - name: Check treesitter
       shell:
         cmd: which tree-sitter
@@ -160,4 +153,4 @@
   import_playbook: kitty.yml
 
 - name: Setup Dotfiles
-  import_playbook: setup-dotfiles.yml
+  import_playbook: dotfiles.yml

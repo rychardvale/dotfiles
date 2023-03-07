@@ -7,7 +7,6 @@
       file:
         state: "absent"
         path: /usr/local/go
-      when: false
 
     - name: Get go latest version
       uri:
@@ -21,4 +20,3 @@
         src: https://go.dev/dl/{{ goversion.content }}.linux-amd64.tar.gz
         dest: /usr/local
         remote_src: yes
-      when: false

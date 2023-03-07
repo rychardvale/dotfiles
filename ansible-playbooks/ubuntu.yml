@@ -1,16 +1,15 @@
-- name: Prepare stuff
+- name: Setup Base
   hosts: localhost
   connection: local
   tasks:
-
     - name: the gang
       become: yes
       apt:
-        name: 
-          - vim
+        state: present
+        name: "{{ item }}"
+      loop:
           - htop
           - curl
-          - make
           - xsel
           - xclip
           - build-essential
@@ -20,62 +19,20 @@
           - fzf
           - fd-find
           - feh
+          - i3
           - maim
-          - zsh-autosuggestions
-          - fuse
-          - libfuse2
           - python3
-        install_recommends: yes
-        state: present
-      loop:
+          - ninja-build
 
-    - block: 
-        - name: Check picom
-          stat:
-            path: "/usr/local/bin/picom"
-          register: picom
-
-        - block:
-            - name: Install Picom deps
-              become: yes
-              become_user: root
-              apt:
-                name:
-                  - libxext-dev 
-                  - libxcb1-dev 
-                  - libxcb-damage0-dev 
-                  - libxcb-dpms0-dev 
-                  - libxcb-xfixes0-dev 
-                  - libxcb-shape0-dev 
-                  - libxcb-render-util0-dev 
-                  - libxcb-render0-dev 
-                  - libxcb-randr0-dev 
-                  - libxcb-composite0-dev 
-                  - libxcb-image0-dev 
-                  - libxcb-present-dev 
-                  - libxcb-glx0-dev 
-                  - libpixman-1-dev 
-                  - libdbus-1-dev 
-                  - libconfig-dev 
-                  - libgl-dev 
-                  - libegl-dev 
-                  - libpcre2-dev 
-                  - libevdev-dev 
-                  - uthash-dev 
-                  - libev-dev 
-                  - libx11-xcb-dev 
-                  - meson
-                install_recommends: yes
-                state: present
-            - name: Clone picom repo
-              git:
-                repo: https://github.com/yshui/picom
-                dest: ./picom
-                recursive: yes
-                update: yes
-            - name: Build and Install picom
-              shell: "cd ./picom; meson setup --buildtype=release . build && ninja -C build install"
-          when: picom.stat.exists == false
+    - name: Check tmux plugin
+      stat:
+        path: "{{ ansible_env.HOME }}/.tmux/plugins/tpm"
+      register: tpm
+    - name: Install tmux plugin manager
+      git:
+        repo: https://github.com/tmux-plugins/tpm 
+        dest: "{{ ansible_env.HOME }}/.tmux/plugins/tpm"
+      when: tpm.stat.exists == false
 
     - name: Changing Default Shell to ZSH
       become: yes
@@ -83,204 +40,117 @@
         name: "{{ ansible_user_id }}"
         shell: /bin/zsh
 
-    - block: 
-        - name: check if ohmyzsh
-          stat:
-            path: "~/.oh-my-zsh"
-          register: ohmyzsh
-        - block: 
-            - name: Download OhMyZsh
-              get_url:
-                url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
-                dest: "./ohmyzsh.sh"
-                mode: 0755
-            - name: Install ohmyzsh
-              shell:
-                cmd: "./ohmyzsh.sh -y"
-          when: ohmyzsh.stat.exists == false
-
+    - name: check if ohmyzsh
+      stat:
+        path: "~/.oh-my-zsh"
+      register: ohmyzsh
     - block:
-        - name: Check if autosuggestions exists
-          stat:
-            path: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
-          register: zshsugg
+      - name: Download OhMyZsh
+        get_url:
+          url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+          dest: "./ohmyzsh.sh"
+          mode: 0755
+      - name: Install ohmyzsh
+        shell:
+          cmd: "./ohmyzsh.sh -y"
+      - name: Remove ohmyzsh installer
+        file:
+          path: ./ohmyzsh.sh
+          state: absent
+      when: ohmyzsh.stat.exists == false
 
-        - name: Install zsh-autosuggestions
-          git:
-            repo: https://github.com/zsh-users/zsh-autosuggestions 
-            dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
-          when: zshsugg.stat.exists == false
+    - name: check .local/bin
+      stat:
+        path: "~/.local/bin"
+      register: localbin
+    - name: create .local/bin
+      file:
+        path: "~/.local/bin"
+        state: directory
+      when: localbin.stat.exists == false
 
+    - name: check powerlevel installed
+      stat:
+        path: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/themes/powerlevel10k"
+      register: powerlevel
+    - name: get sweet themes
+      git:
+        repo: https://github.com/romkatv/powerlevel10k.git
+        dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/themes/powerlevel10k"
+        depth: 1
+      when: powerlevel.stat.exists == false
+
+    - name: chekc if nvm exists
+      become: yes
+      become_user: root
+      shell: "source {{ ansible_env.HOME }}/.nvm/nvm.sh && nvm -v"
+      args:
+        executable: /bin/zsh
+      ignore_errors: true
+      register: nvmstuff
     - block:
-        - name: check .local/bin
-          stat:
-            path: "~/.local/bin"
-          register: localbin
-        - name: create .local/bin
+        - name: Download nvm
+          get_url:
+            url: https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh
+            dest: "./nvm.sh"
+        - name: install nvm
+          command: bash ./nvm.sh
+      when: nvmstuff.rc != 0
+
+    - name: check if cargo exsits
+      command: which cargo
+      ignore_errors: true
+      register: cargo
+    - block:
+        - name: download cargo
+          get_url:
+            url: https://sh.rustup.rs
+            dest: "./cargo.sh"
+        - name: Install cargo
+          command: bash ./cargo.sh -y
+        - name: Remove Cargo SH
           file:
-            path: "~/.local/bin"
-            state: directory
-          when: localbin.stat.exists == false
-
-    - block: 
-        - name: check if kitty exists
-          stat:
-            path: "~/.local/kitty.app"
-          register: kitty
-
-
-        - block:
-            - name: get a kitty
-              get_url:
-                url: https://sw.kovidgoyal.net/kitty/installer.sh
-                dest: "./kitty-installer.sh"
-
-            - name: install kitty
-              command: /bin/sh "./kitty-installer.sh"
-
-            - name: Link Kitty
-              file:
-                src: "~/.local/kitty.app/bin/kitty"
-                dest: "~/.local/bin/kitty"
-                state: link
-          when: kitty.stat.exists == false
-
-        - name: Check if link exists
-          stat:
-            path: "~/.local/bin/kitty"
-          register: kittylink
-
-        - name: Link Kitty
-          file:
-            src: "~/.local/kitty.app/bin/kitty"
-            dest: "~/.local/bin/kitty"
-            state: link
-          when: kittylink.stat.exists == false
+            path: ./cargo.sh
+            state: absent
+      when: cargo.rc != 0
 
     - name: copy fonts
-      command: "cp -r ./.fonts ~/"
-
-    - block:
-        - name: check powerlevel installed
-          stat:
-            path: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/themes/powerlevel10k"
-          register: powerlevel
-        - name: get sweet themes
-          git:
-            repo: https://github.com/romkatv/powerlevel10k.git
-            dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/themes/powerlevel10k"
-            depth: 1
-          when: powerlevel.stat.exists == false
-
-    - block:
-        - name: chekc if nvm exists
-          become: yes
-          become_user: root
-          shell: "source {{ ansible_env.HOME }}/.nvm/nvm.sh && nvm -v"
-          args:
-            executable: /bin/zsh
-          ignore_errors: true
-          register: nvmstuff
-
-        - block: 
-            - name: Download nvm
-              get_url:
-                url: https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh
-                dest: "./nvm.sh"
-
-            - name: install nvm
-              command: bash ./nvm.sh
-          when: nvmstuff.rc != 0
-
-    - block:
-        - name: check if cargo exsits
-          shell: 
-            cmd: which cargo
-          ignore_errors: true
-          register: cargo
-
-        - block: 
-            - name: download cargo
-              become: yes
-              get_url:
-                url: https://sh.rustup.rs
-                dest: "./cargo.sh"
-
-            - name: Install cargo
-              shell:
-                cmd: "./cargo.sh -y"
-          when: cargo.rc != 0
-
-    - block:
-        - name: Check if neovim exists
-          command: which nvim
-          ignore_errors: true
-          register: nvim
-
-        - block:
-            - name: Download neovim
-              become: yes
-              get_url:
-                url: https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
-                dest: "~/.local/bin/nvim"
-                mode: 0755
-          when: nvim.rc != 0
-
-    - name: Copy dotfiles
-      shell: cp {{ item }} ~/
-      loop:
-        - ../.zshrc
-        - ../.zshenv
-        - ../.tmux.conf
-        - ../.bashrc
-
+      command: cp -r ../.fonts ~/
     - name: copy bg
-      command: cp -r ./bg ~/
+      command: cp -r ../bg ~/
 
     - name: Check if .config exists
       stat:
         path: ~/.config
       register: config
-
     - name: create .config
       file:
         path: ~/.config
         state: directory
       when: config.stat.exists == false
 
-    - name: copy .config stuff
-      shell:
-        cmd: "cp -r ../.config/* ~/.config/"
-
-    - name: Install lts
-      become: yes
-      become_user: "{{ ansible_user_id }}"
-      shell: "source ~/.nvm/nvm.sh && nvm install --lts"
-      args:
-        executable: /bin/zsh
-
     - name: Check treesitter
       shell:
         cmd: which tree-sitter
       ignore_errors: true
       register: treesitter
-
     - name: Install treesitter
       command: cargo install tree-sitter-cli
       when: treesitter.rc != 0
+      ignore_errors: true
 
-    - name: Check if golang exists
-      stat:
-        path: /usr/local/go
-      register: golang
-    - block:
-        - name: Get go latest version
-          shell: curl "https://go.dev/VERSION?m=text"
-          register: goversion
+- name: Install Picom
+  import_playbook: picom.yml
+  when: false
 
-        - name: Installing golang {{ goversion.stdout }}
-          unarchive:
-            src: https://go.dev/dl/{{ goversion.stdout }}.linux-amd64.tar.gz
-            dest: /usr/local
-            remote_src: yes
-      when: golang.stat.exists == false
+- name: Setup nvim
+  import_playbook: nvim.yml
+
+- name: GoLang
+  import_playbook: golang.yml
+
+- name: Kitty
+  import_playbook: kitty.yml
+
+- name: Setup Dotfiles
+  import_playbook: dotfiles.yml

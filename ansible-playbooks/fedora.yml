@@ -1,5 +1,5 @@
 - name: Setup Base
-  hosts: all
+  hosts: localhost
   connection: local
   tasks:
     - name: the gang
@@ -30,7 +30,7 @@
       register: tpm
     - name: Install tmux plugin manager
       git:
-        repo: git clone https://github.com/tmux-plugins/tpm 
+        repo: https://github.com/tmux-plugins/tpm 
         dest: "{{ ansible_env.HOME }}/.tmux/plugins/tpm"
       when: tpm.stat.exists == false
 
@@ -95,6 +95,10 @@
             dest: "./nvm.sh"
         - name: install nvm
           command: bash ./nvm.sh
+        - name: remove nvm sh
+          file:
+            path: ./nvm.sh
+            state: absent
       when: nvmstuff.rc != 0
 
     - name: check if cargo exsits
@@ -103,13 +107,12 @@
       register: cargo
     - block:
         - name: download cargo
-          become: yes
           get_url:
             url: https://sh.rustup.rs
             dest: "./cargo.sh"
+            mode: 0755
         - name: Install cargo
-          shell:
-            cmd: "./cargo.sh -y"
+          command: bash ./cargo.sh -y
         - name: Remove Cargo SH
           file:
             path: ./cargo.sh
@@ -117,9 +120,9 @@
       when: cargo.rc != 0
 
     - name: copy fonts
-      command: "cp -r ./.fonts ~/"
+      command: "cp -r ../.fonts ~/"
     - name: copy bg
-      command: cp -r ./bg ~/
+      command: cp -r ../bg ~/
 
     - name: Check if .config exists
       stat:

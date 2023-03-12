@@ -23,6 +23,7 @@
           - maim
           - python3
           - ninja-build
+          - cmake
 
     - name: Check tmux plugin
       stat:
@@ -141,7 +142,6 @@
 
 - name: Install Picom
   import_playbook: picom.yml
-  when: false
 
 - name: Setup nvim
   import_playbook: nvim.yml

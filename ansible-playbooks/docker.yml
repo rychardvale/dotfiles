@@ -1,43 +1,83 @@
 - name: Setup Docker
   hosts: localhost
+  gather_facts: yes
   connection: local
   tasks:
-    - name: Remove old docker binaries
-      become: yes
-      dnf:
-        state: absent
-        name: 
-          - docker
-          - docker-client 
-          - docker-client-latest 
-          - docker-common 
-          - docker-latest 
-          - docker-latest-logrotate 
-          - docker-logrotate 
-          - docker-selinux 
-          - docker-engine-selinux 
-          - docker-engine
+    - name: Install for Fedora
+      when: ansible_facts['distribution'] == 'Fedora'
+      block: 
+        - name: Remove old docker binaries
+          become: yes
+          dnf:
+            state: absent
+            name: 
+              - docker
+              - docker-client 
+              - docker-client-latest 
+              - docker-common 
+              - docker-latest 
+              - docker-latest-logrotate 
+              - docker-logrotate 
+              - docker-selinux 
+              - docker-engine-selinux 
+              - docker-engine
+        - name: Dnf plugins core
+          become: yes
+          dnf:
+            name: dnf-plugins-core
+        - name: add docker repo dnf
+          become: yes
+          shell: "sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo"
+        - name: Install Docker Engine
+          become: yes
+          dnf:
+            update_cache: true
+            state: latest
+            name:
+              - docker-ce 
+              - docker-ce-cli 
+              - containerd.io 
+              - docker-buildx-plugin 
+              - docker-compose-plugin
 
-    - name: Dnf plugins core
-      become: yes
-      dnf:
-        name: dnf-plugins-core
+    - name: Install for Ubuntu
+      when: ansible_facts['distribution'] == 'Ubuntu'
+      block:
+        - name: Remove old versions
+          apt: 
+            state: absent
+            name: 
+              - docker 
+              - docker-engine 
+              - docker.io 
+              - containerd 
+              - runc
 
-    - name: add docker repo dnf
-      become: yes
-      shell: "sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo"
+        - name: Install stuff
+          apt:
+            state: present
+            name: 
+              - ca-certificates
+              - curl
+              - gnupg
+              - lsp-release
+            update_cache: yes
 
-    - name: Install Docker Engine
-      become: yes
-      dnf:
-        update_cache: true
-        state: latest
-        name:
-          - docker-ce 
-          - docker-ce-cli 
-          - containerd.io 
-          - docker-buildx-plugin 
-          - docker-compose-plugin
+        - name: Add Docker GPG apt Key
+          apt_key:
+            url: https://download.docker.com/linux/ubuntu/gpg
+            state: present
+
+        - name: Add Docker Repository
+          apt_repository:
+            repo: deb https://download.docker.com/linux/ubuntu focal stable
+            state: present
+
+        - name: Update apt and install docker-ce
+          apt:
+            name: docker-ce
+            state: latest
+            update_cache: true
 
     - name: Start docker service
       become: yes

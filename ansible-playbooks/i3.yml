@@ -1,8 +1,10 @@
 - name: Prepare stuff
   hosts: localhost
+  gather_facts: yes
   connection: local
   tasks:
     - name: Install latest i3 for Ubuntu
+      when: ansible_facts['distribution'] == 'Ubuntu'
       block: 
         - name: Install keyring deb
           become: yes

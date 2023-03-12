@@ -129,7 +129,8 @@
       when: nvmstuff.rc != 0
 
     - name: check if cargo exsits
-      command: which cargo
+      stat:
+        path: "{{ ansible_env.HOME }}/bin/cargo"
       ignore_errors: true
       register: cargo
     - block:
@@ -167,7 +168,7 @@
       ignore_errors: true
       register: treesitter
     - name: Install treesitter
-      command: bash ~/.cargo/bin/cargo install tree-sitter-cli
+      command: ~/.cargo/bin/cargo install tree-sitter-cli
       when: treesitter.rc != 0
 
 - name: Install Picom

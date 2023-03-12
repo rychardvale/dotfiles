@@ -167,7 +167,8 @@
       ignore_errors: true
       register: treesitter
     - name: Install treesitter
-      command: cargo install tree-sitter-cli
+      shell:
+        cmd: cargo install tree-sitter-cli
       when: treesitter.rc != 0
 
 - name: Install Picom

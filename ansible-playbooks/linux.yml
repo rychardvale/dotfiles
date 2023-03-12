@@ -1,3 +1,6 @@
+- name: Setup Dotfiles
+  import_playbook: dotfiles.yml
+
 - name: Setup Base
   hosts: localhost
   gather_facts: yes
@@ -130,7 +133,7 @@
 
     - name: check if cargo exsits
       stat:
-        path: "{{ ansible_env.HOME }}/bin/cargo"
+        path: "{{ ansible_env.HOME }}/.cargo/bin/cargo"
       ignore_errors: true
       register: cargo
     - block:
@@ -145,7 +148,7 @@
           file:
             path: ./cargo.sh
             state: absent
-      when: cargo.rc != 0
+      when: cargo.stat.exists == false
 
     - name: copy fonts
       command: "cp -r ../.fonts ~/"
@@ -168,7 +171,7 @@
       ignore_errors: true
       register: treesitter
     - name: Install treesitter
-      command: ~/.cargo/bin/cargo install tree-sitter-cli
+      command: "{{ ansible_env.HOME }}/.cargo/bin/cargo install tree-sitter-cli"
       when: treesitter.rc != 0
 
 - name: Install Picom

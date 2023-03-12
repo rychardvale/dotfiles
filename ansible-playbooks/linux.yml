@@ -1,8 +1,10 @@
 - name: Setup Base
   hosts: localhost
+  gather_facts: yes
   connection: local
   tasks:
-    - name: the gang
+    - name: the gang Ubuntu
+      when: ansible_facts['distribution'] == 'Ubuntu'
       become: yes
       apt:
         state: present
@@ -13,6 +15,30 @@
           - xsel
           - xclip
           - build-essential
+          - tmux
+          - zsh
+          - ripgrep
+          - fzf
+          - fd-find
+          - feh
+          - i3
+          - maim
+          - python3
+          - ninja-build
+          - cmake
+
+    - name: the gang fedora
+      become: yes
+      when: ansible_facts['distribution'] == 'Fedora'
+      dnf:
+        state: present
+        name: "{{ item }}"
+      loop:
+          - htop
+          - curl
+          - xsel
+          - xclip
+          - "@Development tools"
           - tmux
           - zsh
           - ripgrep
@@ -96,6 +122,10 @@
             dest: "./nvm.sh"
         - name: install nvm
           command: bash ./nvm.sh
+        - name: remove nvm sh
+          file:
+            path: ./nvm.sh
+            state: absent
       when: nvmstuff.rc != 0
 
     - name: check if cargo exsits
@@ -107,6 +137,7 @@
           get_url:
             url: https://sh.rustup.rs
             dest: "./cargo.sh"
+            mode: 0755
         - name: Install cargo
           command: bash ./cargo.sh -y
         - name: Remove Cargo SH
@@ -116,7 +147,7 @@
       when: cargo.rc != 0
 
     - name: copy fonts
-      command: cp -r ../.fonts ~/
+      command: "cp -r ../.fonts ~/"
     - name: copy bg
       command: cp -r ../bg ~/
 
@@ -138,7 +169,6 @@
     - name: Install treesitter
       command: cargo install tree-sitter-cli
       when: treesitter.rc != 0
-      ignore_errors: true
 
 - name: Install Picom
   import_playbook: picom.yml
@@ -154,3 +184,9 @@
 
 - name: Setup Dotfiles
   import_playbook: dotfiles.yml
+
+- name: Install Docker
+  import_playbook: docker.yml
+
+- name: Install Discord
+  import_playbook: discord.yml

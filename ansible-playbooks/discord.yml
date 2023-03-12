@@ -5,7 +5,7 @@
     - name: remove old discord files
       file:
         path: "~/.local/Discord"
-        state: "absent"
+        state: absent
 
     - name: Get discord tar
       unarchive:

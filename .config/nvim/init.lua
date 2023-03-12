@@ -13,7 +13,3 @@ require("rvalle.statusline")
 require("rvalle.oil")
 require("rvalle.illuminate")
 require("rvalle.lspsaga")
-
--- require("rvalle.bufferline")
--- require("rvalle.project")
--- require("rvalle.dap")

@@ -88,8 +88,24 @@
             state: latest
             update_cache: true
 
-    - name: Start docker service
+    - name: start docker service
       become: yes
       service:
         name: docker
         state: "started"
+
+    - name: add docker group
+      become: yes
+      group:
+        name: docker
+        state: present
+
+    - name: add docker to sudoers
+      become: yes
+      shell:
+        cmd: usermod -aG docker "{{ ansible_env.USER }}"
+
+    - name: load docker group
+      become: yes
+      shell:
+        cmd: newgrp docker

@@ -44,6 +44,7 @@
       when: ansible_facts['distribution'] == 'Ubuntu'
       block:
         - name: Remove old versions
+          become: yes
           apt: 
             state: absent
             name: 

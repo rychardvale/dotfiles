@@ -107,6 +107,5 @@
         cmd: usermod -aG docker "{{ ansible_env.USER }}"
 
     - name: load docker group
-      become: yes
       shell:
         cmd: newgrp docker

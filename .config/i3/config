@@ -161,6 +161,9 @@ bindsym Print exec --no-startup-id maim --format=png "/home/$USER/Pictures/scree
 bindsym $mod+Print exec --no-startup-id maim --format=png --window $(xdotool getactivewindow) "/home/$USER/Pictures/screenshot-$(date -u +'%Y%m%d-%H%M%SZ')-current.png"
 bindsym Shift+Print exec --no-startup-id maim --format=png --select /dev/stdout | xclip -selection clipboard -t image/png -i
 
+# sleep
+bindsym $mod+F12 exec --no-startup-id systemctl suspend
+
 # Toggles keyboard layout
 bindsym $mod+bracketright exec --no-startup-id "setxkbmap -layout us -variant intl"
 bindsym $mod+bracketleft exec --no-startup-id "setxkbmap -layout us"

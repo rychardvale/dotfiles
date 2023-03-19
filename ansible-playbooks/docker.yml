@@ -62,7 +62,7 @@
               - ca-certificates
               - curl
               - gnupg
-              - lsp-release
+              - lsb-release
             update_cache: yes
 
         - name: Add Docker GPG apt Key

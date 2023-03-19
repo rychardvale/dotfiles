@@ -100,7 +100,6 @@ require("lazy").setup({
 		"akinsho/bufferline.nvim",
 		dependencies = { "kyazdani42/nvim-web-devicons" },
 	},
-	"glepnir/lspsaga.nvim",
 	"numToStr/Comment.nvim",
 	"JoosepAlviste/nvim-ts-context-commentstring",
 	{

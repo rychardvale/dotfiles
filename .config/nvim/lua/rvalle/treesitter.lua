@@ -6,6 +6,7 @@ end
 
 treesitter.setup({
 	ensure_installed = "all",
+	ignore_install = { "smali" },
 	highlight = {
 		enable = true,
 		matchup = { enable = true },

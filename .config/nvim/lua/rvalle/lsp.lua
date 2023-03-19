@@ -5,16 +5,13 @@ end
 
 masonlsp.setup({
 	ensure_installed = {
-		"sumneko_lua",
+		"lua_ls",
 		"pyright",
 		"bashls",
 		"tsserver",
 		"rust_analyzer",
 		"gopls",
 		"prismals",
-		"yamlls",
-		"ansiblels",
-		"jsonls",
 	},
 })
 
@@ -23,13 +20,13 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 local function config(_config)
 	return vim.tbl_deep_extend("force", {
-			capabilities = capabilities,
-		}, _config or {})
+		capabilities = capabilities,
+	}, _config or {})
 end
 
 lspconfig.pyright.setup(config())
 lspconfig.bashls.setup(config())
-lspconfig.sumneko_lua.setup(config({
+lspconfig.lua_ls.setup(config({
 	settings = {
 		Lua = {
 			diagnostics = {
@@ -50,9 +47,6 @@ lspconfig.rust_analyzer.setup(config({
 }))
 lspconfig.gopls.setup(config())
 lspconfig.prismals.setup(config())
-lspconfig.ansiblels.setup(config())
-lspconfig.yamlls.setup(config())
-lspconfig.jsonls.setup(config())
 
 local signs = { Error = "E ", Warn = "W ", Info = "I " }
 for type, icon in pairs(signs) do

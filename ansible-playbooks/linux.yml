@@ -29,6 +29,7 @@
           - python3
           - ninja-build
           - cmake
+          - light
 
     - name: the gang fedora
       become: yes
@@ -46,13 +47,13 @@
           - zsh
           - ripgrep
           - fzf
-          - fd-find
           - feh
           - i3
           - maim
           - python3
           - ninja-build
           - cmake
+          - light
 
     - name: Check tmux plugin
       stat:
@@ -165,14 +166,10 @@
         state: directory
       when: config.stat.exists == false
 
-    - name: Check treesitter
-      shell:
-        cmd: which tree-sitter
-      ignore_errors: true
-      register: treesitter
     - name: Install treesitter
       command: "{{ ansible_env.HOME }}/.cargo/bin/cargo install tree-sitter-cli"
-      when: treesitter.rc != 0
+    - name: Install fd-find
+      command: "{{ ansible_env.HOME }}/.cargo/bin/cargo install fd-find"
 
 - name: Install Picom
   import_playbook: picom.yml

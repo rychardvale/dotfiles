@@ -90,6 +90,11 @@
           state: absent
       when: ohmyzsh.stat.exists == false
 
+    - name: "install zsh autosuggestions"
+      git:
+        repo: https://github.com/zsh-users/zsh-autosuggestions
+        dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+
     - name: check .local/bin
       stat:
         path: "~/.local/bin"

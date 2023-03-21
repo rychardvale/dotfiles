@@ -10,6 +10,7 @@ treesitter.setup({
 	highlight = {
 		enable = true,
 		matchup = { enable = true },
+		disable = { 'css', 'sql' },
 		context_commentstring = {
 			enable = true,
 			enable_autocmd = false,

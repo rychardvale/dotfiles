@@ -1,12 +1,25 @@
 local o = vim.opt
+local g = vim.g
 
+vim.g.clipboard = {
+	name = 'xsel',
+	copy = {
+		["+"] = "xsel --nodetach -i -b",
+		["*"] = "xsel --nodetach -i -p",
+	},
+	paste = {
+		["+"] = "xsel -o -b",
+		["*"] = "xsel -o -b"
+	},
+	cache_enabled = 1
+}
+o.clipboard = "unnamedplus"
 o.expandtab = false
 o.tabstop = 4
 o.shiftwidth = 4
 o.smartindent = true
 o.smarttab = true
 o.ignorecase = true
-o.clipboard = "unnamedplus"
 o.signcolumn = "yes"
 o.splitbelow = true
 o.splitright = true

@@ -48,6 +48,9 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock-fancy
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
 
+exec --no-startup-id xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Tapping Enabled" 1
+exec --no-startup-id xinput set-prop "SynPS/2 Synaptics TouchPad" "libinput Natural Scrolling Enabled" 1
+
 set $refresh_i3status killall -SIGUSR1 i3status
 
 # Use pactl to adjust volume in PulseAudio.

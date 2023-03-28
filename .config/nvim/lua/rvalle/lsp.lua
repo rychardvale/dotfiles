@@ -25,6 +25,7 @@ local function config(_config)
 end
 
 lspconfig.pyright.setup(config())
+lspconfig.html.setup(config())
 lspconfig.bashls.setup(config())
 lspconfig.lua_ls.setup(config({
 	settings = {

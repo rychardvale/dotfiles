@@ -41,7 +41,11 @@ require("lazy").setup({
 		end,
 	},
 
-	"sindrets/diffview.nvim",
+	{
+		"sindrets/diffview.nvim",
+		dependencies = { "nvim-lua/plenary.nvim" },
+	}
+	,
 
 	{
 		"j-hui/fidget.nvim",

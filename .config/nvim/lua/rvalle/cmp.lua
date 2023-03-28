@@ -35,7 +35,7 @@ cmp.setup({
 		["<C-f>"] = cmp.mapping.scroll_docs(4),
 		["<C-Space>"] = cmp.mapping.complete(),
 		["<C-e>"] = cmp.mapping.abort(),
-		["<CR>"] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+		["<CR>"] = cmp.mapping.confirm({ select = false }),                                  -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
 		["<c-y>"] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Insert }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
 	}),
 	sources = cmp.config.sources({
@@ -44,7 +44,7 @@ cmp.setup({
 		{ name = "luasnip" },
 		{ name = "nvim_lua" },
 		{ name = "path" },
-		{ name = "gh_issues", keyword_length = 3 },
+		{ name = "gh_issues",              keyword_length = 3 },
 	}, {
 		{ name = "buffer", keyword_length = 3 },
 	}),

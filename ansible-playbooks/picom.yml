@@ -58,16 +58,19 @@
           - libx11-xcb-dev 
           - meson
       when: ansible_facts['distribution'] == "Ubuntu"
+
     - name: Clone picom repo
       git:
         repo: https://github.com/yshui/picom
         dest: ./picom
         recursive: yes
         update: yes
+
     - name: Build and Install picom
       become: yes
       shell: "cd ./picom; meson setup --buildtype=release . build && ninja -C build
         install"
+
     - name: Remove picom git
       become: yes
       file:

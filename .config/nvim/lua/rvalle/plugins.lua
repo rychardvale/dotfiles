@@ -1,4 +1,4 @@
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+local lazypath = vim.fn.stdpath('data') .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
 	vim.fn.system({
 		"git",
@@ -23,12 +23,40 @@ require("lazy").setup({
 			require("treesitter-context").setup()
 		end,
 	},
+
 	"nvim-telescope/telescope.nvim",
-	{ "nvim-telescope/telescope-file-browser.nvim" },
 	{
 		"nvim-telescope/telescope-fzf-native.nvim",
 		build = "make",
-		-- build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build"
+	},
+
+	{
+		'VonHeikemen/lsp-zero.nvim',
+		branch = 'v1.x',
+		dependencies = {
+			-- LSP Support
+			{ 'neovim/nvim-lspconfig' },
+			{
+				'williamboman/mason.nvim',
+				build = function()
+					pcall(vim.cmd, 'MasonUpdate')
+				end,
+			},
+			{ 'williamboman/mason-lspconfig.nvim' },
+
+			-- Autocompletion
+			{ 'hrsh7th/nvim-cmp' }, -- Required
+			{ 'hrsh7th/cmp-nvim-lsp' }, -- Required
+			{ "hrsh7th/cmp-cmdline" },
+			{ 'hrsh7th/cmp-buffer' }, -- Optional
+			{ 'hrsh7th/cmp-path' }, -- Optional
+			{ 'saadparwaiz1/cmp_luasnip' }, -- Optional
+			{ 'hrsh7th/cmp-nvim-lua' }, -- Optional
+
+			-- Snippets
+			{ 'L3MON4D3/LuaSnip' },    -- Required
+			{ 'rafamadriz/friendly-snippets' }, -- Optional
+		}
 	},
 
 	"NvChad/nvim-colorizer.lua",
@@ -44,8 +72,7 @@ require("lazy").setup({
 	{
 		"sindrets/diffview.nvim",
 		dependencies = { "nvim-lua/plenary.nvim" },
-	}
-	,
+	},
 
 	{
 		"j-hui/fidget.nvim",
@@ -54,43 +81,18 @@ require("lazy").setup({
 		end,
 	},
 
-	"neovim/nvim-lspconfig",
-	"onsails/lspkind.nvim",
 	"kyazdani42/nvim-web-devicons",
 
-	-- status line
 	{
 		"nvim-lualine/lualine.nvim",
 		dependencies = { "kyazdani42/nvim-web-devicons" },
 	},
-	{
-		"williamboman/mason.nvim",
-		config = function()
-			require("mason").setup()
-		end,
-	},
-	"williamboman/mason-lspconfig.nvim",
 	{
 		"iamcco/markdown-preview.nvim",
 		build = "cd app && npm install",
 		ft = { "markdown" },
 	},
 
-	"hrsh7th/nvim-cmp",
-	"hrsh7th/cmp-buffer",
-	"hrsh7th/cmp-path",
-	"hrsh7th/cmp-nvim-lua",
-	"hrsh7th/cmp-nvim-lsp",
-	"hrsh7th/cmp-cmdline",
-
-	-- debugers
-	--[[ use("mfussenegger/nvim-dap")
-	use("rcarriga/nvim-dap-ui")
-	use("jayp0521/mason-nvim-dap.nvim") ]]
-
-	--snippets
-	"L3MON4D3/LuaSnip",
-	"saadparwaiz1/cmp_luasnip",
 
 	"jose-elias-alvarez/null-ls.nvim",
 	"windwp/nvim-ts-autotag",
@@ -118,9 +120,7 @@ require("lazy").setup({
 	"stevearc/oil.nvim",
 
 	-- Themmes
-	"navarasu/onedark.nvim",
 	"folke/tokyonight.nvim",
-	{ "catppuccin/nvim",                           as = "catppuccin" },
 	{ "ellisonleao/gruvbox.nvim" },
-	"RRethy/vim-illuminate",
+	"sainnhe/gruvbox-material",
 })

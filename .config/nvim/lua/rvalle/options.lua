@@ -2,16 +2,16 @@ local o = vim.opt
 local g = vim.g
 
 vim.g.clipboard = {
-	name = 'xsel',
+	name = "xsel",
 	copy = {
 		["+"] = "xsel --nodetach -i -b",
 		["*"] = "xsel --nodetach -i -p",
 	},
 	paste = {
 		["+"] = "xsel -o -b",
-		["*"] = "xsel -o -b"
+		["*"] = "xsel -o -b",
 	},
-	cache_enabled = 1
+	cache_enabled = 1,
 }
 o.clipboard = "unnamedplus"
 o.expandtab = false
@@ -53,3 +53,5 @@ o.relativenumber = true
 o.number = true
 
 o.tabline = "%F"
+g.gruvbox_material_background = "hard"
+g.gruvbox_material_foreground = "original"

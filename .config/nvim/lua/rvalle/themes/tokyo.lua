@@ -3,8 +3,6 @@ if not ok_tokyooooo then
 	return
 end
 
-local colors = require("tokyonight.colors")
-
 tokyo.setup({
 	style = "moon",
 	terminal_colors = true,

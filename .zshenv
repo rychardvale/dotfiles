@@ -9,10 +9,12 @@ export PATH="$PNPM_HOME:$PATH"
 export NEOVIDE_MULTIGRID=true
 export EDITOR="$HOME/.local/bin/nvim"
 export NVM_DIR="$HOME/.nvm"
-export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
---color=dark
---color=fg:-1,bg:-1,hl:#5fff87,fg+:-1,bg+:-1,hl+:#ffaf5f
---color=info:#af87ff,prompt:#5fff87,pointer:#ff87d7,marker:#ff87d7,spinner:#ff87d7
-'
+export SUDO_ASKPASS="/usr/bin/ssh-askpass"
+
+export FZF_DEFAULT_OPTS=" \
+--color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 \
+--color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc \
+--color=marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8"
+
 source ~/.nvm/nvm.sh
 . "$HOME/.cargo/env"

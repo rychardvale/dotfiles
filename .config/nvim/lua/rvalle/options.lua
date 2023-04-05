@@ -29,7 +29,6 @@ o.writebackup = false
 o.guifont = { "JetBrainsMono Nerd Font:h10" }
 o.updatetime = 250
 o.cursorline = true
-o.cursorcolumn = true
 o.termguicolors = true
 o.background = "dark"
 o.showmode = false

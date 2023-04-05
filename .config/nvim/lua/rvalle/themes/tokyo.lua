@@ -33,18 +33,8 @@ tokyo.setup({
 			fg = c.bg_dark,
 		}
 
-		-- Cursor line black
-		hl.CursorLine = {
-			bg = c.bg_dark,
-		}
-		hl.LineNr = {
-			fg = c.orange,
-		}
-		hl.LineNrAbove = {
-			fg = c.fg_dark,
-		}
-		hl.LineNrBelow = {
-			fg = c.fg_dark,
+		hl.CursorLineNr = {
+			fg = pink,
 		}
 	end,
 })

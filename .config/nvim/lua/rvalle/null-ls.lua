@@ -16,6 +16,7 @@ null_ls.setup({
 		formatting.prettier,
 		formatting.rustfmt,
 		formatting.yamlfmt,
+		formatting.black
 		-- diagnostics.eslint,
 	},
 })

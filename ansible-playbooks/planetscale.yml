@@ -1,4 +1,0 @@
-- name: Planetscale Setup
-  hosts: localhost
-  connection: local
-  tasks:

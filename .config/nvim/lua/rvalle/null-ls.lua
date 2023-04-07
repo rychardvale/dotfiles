@@ -4,7 +4,7 @@ if not ok then
 end
 
 local formatting = null_ls.builtins.formatting
--- local diagnostics = null_ls.builtins.diagnostics
+local diagnostics = null_ls.builtins.diagnostics
 
 null_ls.setup({
 	sources = {
@@ -12,11 +12,11 @@ null_ls.setup({
 		formatting.clang_format.with({
 			filetypes = { "c", "cpp" },
 		}),
-		formatting.prismaFmt,
 		formatting.prettier,
 		formatting.rustfmt,
 		formatting.yamlfmt,
-		formatting.black
-		-- diagnostics.eslint,
+		formatting.black,
+		formatting.sqlfmt,
+		diagnostics.eslint,
 	},
 })

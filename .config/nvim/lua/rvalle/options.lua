@@ -51,6 +51,6 @@ o.listchars = {
 o.relativenumber = true
 o.number = true
 
-o.tabline = "%F"
+o.showtabline = 0
 g.gruvbox_material_background = "hard"
 g.gruvbox_material_foreground = "original"

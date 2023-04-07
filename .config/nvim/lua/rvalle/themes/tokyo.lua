@@ -34,7 +34,7 @@ tokyo.setup({
 		}
 
 		hl.CursorLineNr = {
-			fg = pink,
+			fg = c.orange,
 		}
 	end,
 })

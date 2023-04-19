@@ -43,7 +43,7 @@ oil.setup({
 		max_height = 0,
 		border = "rounded",
 		win_options = {
-			winblend = 10,
+			winblend = 0,
 		},
 	},
 })

@@ -54,3 +54,5 @@ o.number = true
 o.showtabline = 0
 g.gruvbox_material_background = "hard"
 g.gruvbox_material_foreground = "original"
+g.loaded_sql_completion = 0
+g.ftplugin_sql_omni_key = "ç"

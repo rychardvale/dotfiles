@@ -5,7 +5,7 @@ end
 
 vim.g.catppuccin_flavour = "macchiato"
 cat.setup({
-	transparent_background = false,
+	transparent_background = true,
 	term_colors = false,
 	compile = {
 		enabled = false,

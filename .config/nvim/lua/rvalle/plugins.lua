@@ -83,10 +83,10 @@ require("lazy").setup({
 
 	"kyazdani42/nvim-web-devicons",
 
-	{
+	--[[ {
 		"nvim-lualine/lualine.nvim",
 		dependencies = { "kyazdani42/nvim-web-devicons" },
-	},
+	}, ]]
 	{
 		"iamcco/markdown-preview.nvim",
 		build = "cd app && npm install",
@@ -96,16 +96,6 @@ require("lazy").setup({
 
 	"jose-elias-alvarez/null-ls.nvim",
 	"windwp/nvim-ts-autotag",
-	{
-		"windwp/nvim-autopairs",
-		config = function()
-			require("nvim-autopairs").setup()
-		end,
-	},
-	{
-		"akinsho/bufferline.nvim",
-		dependencies = { "kyazdani42/nvim-web-devicons" },
-	},
 	"numToStr/Comment.nvim",
 	"JoosepAlviste/nvim-ts-context-commentstring",
 	{
@@ -116,11 +106,14 @@ require("lazy").setup({
 		end,
 	},
 	"tpope/vim-fugitive",
+	"ThePrimeagen/harpoon",
 	"ThePrimeagen/git-worktree.nvim",
 	"stevearc/oil.nvim",
 
 	-- Themmes
 	"folke/tokyonight.nvim",
-	{ "ellisonleao/gruvbox.nvim" },
+	"ellisonleao/gruvbox.nvim",
 	"sainnhe/gruvbox-material",
+	"rebelot/kanagawa.nvim",
+	"catppuccin/nvim"
 })

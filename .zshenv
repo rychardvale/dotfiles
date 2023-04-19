@@ -9,7 +9,7 @@ export PATH="$PNPM_HOME:$PATH"
 export NEOVIDE_MULTIGRID=true
 export EDITOR="$HOME/.local/bin/nvim"
 export NVM_DIR="$HOME/.nvm"
-export SUDO_ASKPASS="/usr/bin/ssh-askpass"
+export SUDO_ASKPASS="/usr/libexec/openssh/x11-ssh-askpass"
 
 export FZF_DEFAULT_OPTS=" \
 --color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 \

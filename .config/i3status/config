@@ -7,8 +7,8 @@
 # If the above line is not correctly displayed, fix your editor first!
 
 general {
-        colors = true
-        interval = 1
+	colors = true
+	interval = 1
 }
 
 order += "cpu_usage"

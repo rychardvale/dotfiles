@@ -45,7 +45,7 @@ lsp.nvim_workspace()
 
 lsp.on_attach(function(client, bufnr)
 	local opts = { buffer = bufnr, remap = false }
-	client.server_capabilities.semanticTokensProvider = nil
+	-- client.server_capabilities.semanticTokensProvider = nil
 	vim.keymap.set("n", "gdd", function()
 		vim.lsp.buf.definition()
 	end, opts)

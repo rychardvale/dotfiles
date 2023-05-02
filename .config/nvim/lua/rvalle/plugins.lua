@@ -60,6 +60,12 @@ require("lazy").setup({
 	},
 
 	"NvChad/nvim-colorizer.lua",
+	{
+		"windwp/nvim-autopairs",
+		config = function()
+			require("nvim-autopairs").setup()
+		end
+	},
 
 	{
 		"folke/trouble.nvim",
@@ -83,10 +89,6 @@ require("lazy").setup({
 
 	"kyazdani42/nvim-web-devicons",
 
-	--[[ {
-		"nvim-lualine/lualine.nvim",
-		dependencies = { "kyazdani42/nvim-web-devicons" },
-	}, ]]
 	{
 		"iamcco/markdown-preview.nvim",
 		build = "cd app && npm install",

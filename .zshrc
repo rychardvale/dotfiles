@@ -36,6 +36,7 @@ alias wificonnect='sudo nmcli --ask dev wifi connect'
 alias wifilist='nmcli dev wifi list'
 alias vim='nvim'
 alias vimc='vim ~/.config/'
+alias dokcer='docker' # i cant type
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm

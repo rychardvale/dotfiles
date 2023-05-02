@@ -40,13 +40,6 @@ o.swapfile = false
 o.undofile = true
 o.completeopt = "menuone,noselect"
 
-o.list = true
-o.listchars = {
-	tab = "→ ",
-	trail = "⋅",
-	extends = "❯",
-	precedes = "❮",
-}
 
 o.relativenumber = true
 o.number = true

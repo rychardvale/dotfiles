@@ -97,7 +97,13 @@ require("lazy").setup({
 
 
 	"jose-elias-alvarez/null-ls.nvim",
-	"windwp/nvim-ts-autotag",
+	"jose-elias-alvarez/typescript.nvim",
+	{
+		"windwp/nvim-ts-autotag",
+		config = function()
+			require('nvim-ts-autotag').setup()
+		end
+	},
 	"numToStr/Comment.nvim",
 	"JoosepAlviste/nvim-ts-context-commentstring",
 	{

@@ -43,9 +43,9 @@ lsp.set_preferences({
 })
 lsp.nvim_workspace()
 
+local nl = require("null-ls")
 lsp.on_attach(function(client, bufnr)
 	local opts = { buffer = bufnr, remap = false }
-	-- client.server_capabilities.semanticTokensProvider = nil
 	vim.keymap.set("n", "gdd", function()
 		vim.lsp.buf.definition()
 	end, opts)
@@ -56,11 +56,38 @@ lsp.on_attach(function(client, bufnr)
 	vim.keymap.set("i", "<C-k>", function()
 		vim.lsp.buf.signature_help()
 	end, opts)
+
 	vim.keymap.set("n", "<leader>ff", function()
-		vim.lsp.buf.format({ async = true })
+		vim.lsp.buf.format({
+			async = true,
+			filter = function(clt)
+				local query = {
+					filetype = vim.bo[bufnr].filetype,
+					method = nl.methods.FORMATTING,
+				}
+				local has_formatter = nl.is_registered(query)
+				if has_formatter then
+					return clt.name == "null-ls"
+				end
+				return true
+			end,
+		})
 	end, opts)
 	vim.keymap.set("v", "<leader>ff", function()
-		vim.lsp.buf.format({ async = true })
+		vim.lsp.buf.format({
+			async = true,
+			filter = function(clt)
+				local query = {
+					filetype = vim.bo[bufnr].filetype,
+					method = nl.methods.FORMATTING,
+				}
+				local has_formatter = nl.is_registered(query)
+				if has_formatter then
+					return clt.name == "null-ls"
+				end
+				return true
+			end,
+		})
 	end, opts)
 	vim.keymap.set("n", "<leader>ls", ":Telescope lsp_workspace_symbols<CR>", opts)
 	vim.keymap.set("n", "<leader>vd", function()

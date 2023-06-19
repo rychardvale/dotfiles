@@ -32,5 +32,6 @@ null_ls.setup({
 		formatting.black,
 		formatting.sqlfmt,
 		diagnostics.eslint,
+		diagnostics.tsc,
 	},
 })

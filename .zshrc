@@ -5,12 +5,9 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-trash() { 
-    local t="$HOME/.trash"; 
-    [[ -n "$*" ]] && echo "$t" && mv "$@" "$t" ;
-}
-# Path to your oh-my-zsh installation.
 
+unsetopt auto_cd
+ZSH_DOTENV_PROMPT=false
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="powerlevel10k/powerlevel10k"
 # ZSH_THEME="gruvbox"
@@ -42,11 +39,19 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
+npmv() {
+	npm version $1 --no-git-tag-version;
+}
+
+nd() {
+	mkdir -p "$1" && \
+	cd "$1"
+}
+
 # changes dir with fzf
 fdir() {
-  local dir
-  dir=$(fd --exclude 'node_modules' -t d . ${1:-.} 2> /dev/null | fzf +m) &&
-  cd "$dir"
+	dir=$(fd --exclude 'node_modules' -t d . ${1:-.} 2> /dev/null | fzf +m);
+	cd $dir
 }
 
 bg () {
@@ -118,21 +123,40 @@ fkill() {
 
 # zsh history with fzf
 fh() {
-  eval $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed -E 's/ *[0-9]*\*? *//' | sed -E 's/\\/\\\\/g')
+	cmd=$( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed -E 's/ *[0-9]*\*? *//' | sed -E 's/\\/\\\\/g')
+	echo $cmd;
+	eval $cmd;
 }
 
 tm() {
-  [[ -n "$TMUX" ]] && change="switch-client" || change="attach-session"
-  if [ $1 ]; then
-    tmux $change -t "$1" 2>/dev/null || (tmux new-session -d -s $1 && tmux $change -t "$1"); return
-  fi
-  session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux $change -t "$session" || echo "No sessions found."
+	selected=$(fd --exclude 'node_modules' -t d . ${1:-.} 2> /dev/null | fzf);
+	selected_name=$(echo "$selected" | sed 's/\.//g')
+
+	tmux_running=$(pgrep tmux)
+
+	if [[ -z $selected ]]; then
+		return;
+	fi
+
+	if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
+		tmux new-session -s $selected_name -c $selected
+		exit 0;
+	fi
+
+	if ! tmux has-session -t=$selected_name 2> /dev/null; then
+		tmux new-session -ds $selected_name -c $selected
+	fi
+
+	tmux switch-client -t $selected_name
 }
 
 tmk() {
-	local session
-	session=$(tmux ls -F "#{session_name}" 2>/dev/null | fzf) && tmux kill-session -t "$session" && echo "Session $session killed"
+	session=$(tmux ls -F "#{session_name}" 2>/dev/null | fzf +m) && \
+	tmux kill-session -t "$session" && echo "Session $session killed"
 }
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# add Pulumi to the PATH
+export PATH=$PATH:$HOME/.pulumi/bin

@@ -1,12 +1,12 @@
 vim.g.mapleader = " "
 
 vim.keymap.set("n", "<C-s>", ":w<CR>")
-vim.keymap.set("i", "<M-j>", "<ESC>:m .+1<CR>==gi")  -- move line down
-vim.keymap.set("i", "<M-k>", "<ESC>:m .-2<CR>==gi")  -- move line up
-vim.keymap.set("v", "<M-j>", ":m '>+1<CR>gv=gv")     -- move down but visual
-vim.keymap.set("v", "<M-k>", ":m '<-2<CR>gv=gv")     -- move up but visual
-vim.keymap.set("n", "<M-j>", ":m .+1<CR>==")         -- move line down
-vim.keymap.set("n", "<M-k>", ":m .-2<CR>==")         -- move line up
+vim.keymap.set("i", "<M-j>", "<ESC>:m .+1<CR>==gi") -- move line down
+vim.keymap.set("i", "<M-k>", "<ESC>:m .-2<CR>==gi") -- move line up
+vim.keymap.set("v", "<M-j>", ":m '>+1<CR>gv=gv") -- move down but visual
+vim.keymap.set("v", "<M-k>", ":m '<-2<CR>gv=gv") -- move up but visual
+vim.keymap.set("n", "<M-j>", ":m .+1<CR>==") -- move line down
+vim.keymap.set("n", "<M-k>", ":m .-2<CR>==") -- move line up
 vim.keymap.set("n", "<leader>hh", ":nohlsearch<CR>") -- removes highlight
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
@@ -14,6 +14,7 @@ vim.keymap.set("n", "n", "nzz")
 vim.keymap.set("n", "N", "Nzz")
 vim.keymap.set("n", "<leader>pv", ":Oil --float<CR>")
 vim.keymap.set("n", "<leader>D", ":TroubleToggle<CR>")
+vim.keymap.set("c", "w!!", "w !sudo tee %")
 
 -- let me be
 vim.keymap.set("i", "<C-c>", "<ESC>")
@@ -45,24 +46,27 @@ vim.keymap.set("n", "<leader>gl", ":lua require('telescope').extensions.git_work
 vim.keymap.set("n", "<leader>hs", ":Gitsigns stage_hunk<CR>")
 vim.keymap.set("n", "<leader>hr", ":Gitsigns reset_hunk<CR>")
 vim.keymap.set("n", "<leader>hd", ":Gitsigns diffthis<CR>")
+vim.keymap.set("n", "<leader>hD", "<cmd>lua require('gitsigns').diffthis('~')<CR>")
+--[[ vim.keymap.set("n", "<leader>hD", function()
+	require("gitsigns").diffthis("~")
+end) ]]
 
 -- harpoon
 vim.keymap.set("n", "<leader>a", function()
-	require('harpoon.mark').add_file()
+	require("harpoon.mark").add_file()
 end)
 vim.keymap.set("n", "<C-e>", function()
-	require('harpoon.ui').toggle_quick_menu()
+	require("harpoon.ui").toggle_quick_menu()
 end)
 vim.keymap.set("n", "<C-f>", function()
-	require('harpoon.ui').nav_file(1)
+	require("harpoon.ui").nav_file(1)
 end)
 vim.keymap.set("n", "<C-g>", function()
-
-	require('harpoon.ui').nav_file(2)
+	require("harpoon.ui").nav_file(2)
 end)
 vim.keymap.set("n", "<C-h>", function()
-	require('harpoon.ui').nav_file(3)
+	require("harpoon.ui").nav_file(3)
 end)
 vim.keymap.set("n", "<C-j>", function()
-	require('harpoon.ui').nav_file(4)
+	require("harpoon.ui").nav_file(4)
 end)

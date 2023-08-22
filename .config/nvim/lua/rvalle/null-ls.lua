@@ -19,6 +19,7 @@ null_ls.setup({
 				"html",
 				"json",
 				"yaml",
+				"yml",
 				"markdown",
 				"css",
 				"typescript",
@@ -31,7 +32,6 @@ null_ls.setup({
 		formatting.yamlfmt,
 		formatting.black,
 		formatting.sqlfmt,
-		diagnostics.eslint,
-		diagnostics.tsc,
+		-- diagnostics.eslint,
 	},
 })

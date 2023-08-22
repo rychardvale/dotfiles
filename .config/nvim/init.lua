@@ -9,4 +9,3 @@ require("rvalle.lsp")
 require("rvalle.comment")
 require("rvalle.colorizer")
 require("rvalle.oil")
-

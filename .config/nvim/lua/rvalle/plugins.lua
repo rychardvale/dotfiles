@@ -1,4 +1,4 @@
-local lazypath = vim.fn.stdpath('data') .. "/lazy/lazy.nvim"
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
 	vim.fn.system({
 		"git",
@@ -31,32 +31,32 @@ require("lazy").setup({
 	},
 
 	{
-		'VonHeikemen/lsp-zero.nvim',
-		branch = 'v1.x',
+		"VonHeikemen/lsp-zero.nvim",
+		branch = "v1.x",
 		dependencies = {
 			-- LSP Support
-			{ 'neovim/nvim-lspconfig' },
+			{ "neovim/nvim-lspconfig" },
 			{
-				'williamboman/mason.nvim',
+				"williamboman/mason.nvim",
 				build = function()
-					pcall(vim.cmd, 'MasonUpdate')
+					pcall(vim.cmd, "MasonUpdate")
 				end,
 			},
-			{ 'williamboman/mason-lspconfig.nvim' },
+			{ "williamboman/mason-lspconfig.nvim" },
 
 			-- Autocompletion
-			{ 'hrsh7th/nvim-cmp' }, -- Required
-			{ 'hrsh7th/cmp-nvim-lsp' }, -- Required
+			{ "hrsh7th/nvim-cmp" }, -- Required
+			{ "hrsh7th/cmp-nvim-lsp" }, -- Required
 			{ "hrsh7th/cmp-cmdline" },
-			{ 'hrsh7th/cmp-buffer' }, -- Optional
-			{ 'hrsh7th/cmp-path' }, -- Optional
-			{ 'saadparwaiz1/cmp_luasnip' }, -- Optional
-			{ 'hrsh7th/cmp-nvim-lua' }, -- Optional
+			{ "hrsh7th/cmp-buffer" }, -- Optional
+			{ "hrsh7th/cmp-path" }, -- Optional
+			{ "saadparwaiz1/cmp_luasnip" }, -- Optional
+			{ "hrsh7th/cmp-nvim-lua" }, -- Optional
 
 			-- Snippets
-			{ 'L3MON4D3/LuaSnip' },    -- Required
-			{ 'rafamadriz/friendly-snippets' }, -- Optional
-		}
+			{ "L3MON4D3/LuaSnip" }, -- Required
+			{ "rafamadriz/friendly-snippets" }, -- Optional
+		},
 	},
 
 	"NvChad/nvim-colorizer.lua",
@@ -64,7 +64,7 @@ require("lazy").setup({
 		"windwp/nvim-autopairs",
 		config = function()
 			require("nvim-autopairs").setup()
-		end
+		end,
 	},
 
 	{
@@ -95,14 +95,13 @@ require("lazy").setup({
 		ft = { "markdown" },
 	},
 
-
 	"jose-elias-alvarez/null-ls.nvim",
 	"jose-elias-alvarez/typescript.nvim",
 	{
 		"windwp/nvim-ts-autotag",
 		config = function()
-			require('nvim-ts-autotag').setup()
-		end
+			require("nvim-ts-autotag").setup()
+		end,
 	},
 	"numToStr/Comment.nvim",
 	"JoosepAlviste/nvim-ts-context-commentstring",
@@ -110,7 +109,15 @@ require("lazy").setup({
 		"lewis6991/gitsigns.nvim",
 		dependencies = { "nvim-lua/plenary.nvim" },
 		config = function()
-			require("gitsigns").setup()
+			require("gitsigns").setup({
+				on_attach = function(bufnr)
+					local function map(mode, lhs, rhs, opts)
+						opts = vim.tbl_extend("force", { noremap = true, silent = true }, opts or {})
+						vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, opts)
+					end
+					map("n", "<leader>hD", '<cmd>lua require"gitsigns".diffthis("~")<CR>')
+				end,
+			})
 		end,
 	},
 	"tpope/vim-fugitive",
@@ -123,5 +130,5 @@ require("lazy").setup({
 	"ellisonleao/gruvbox.nvim",
 	"sainnhe/gruvbox-material",
 	"rebelot/kanagawa.nvim",
-	"catppuccin/nvim"
+	"catppuccin/nvim",
 })

@@ -4,6 +4,11 @@ if not ok_treesitter then
 	return
 end
 
+--[[ local ok_ctx, ctx = pcall(require, "treesitter-context")
+if ok_ctx then
+	ctx.setup()
+end ]]
+
 treesitter.setup({
 	ensure_installed = "all",
 	ignore_install = { "smali" },

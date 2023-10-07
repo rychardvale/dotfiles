@@ -4,11 +4,9 @@ if not ok then
 end
 
 local formatting = null_ls.builtins.formatting
-local diagnostics = null_ls.builtins.diagnostics
 
 null_ls.setup({
 	sources = {
-		require("typescript.extensions.null-ls.code-actions"),
 		formatting.stylua,
 		formatting.clang_format.with({
 			filetypes = { "c", "cpp" },
@@ -32,6 +30,5 @@ null_ls.setup({
 		formatting.yamlfmt,
 		formatting.black,
 		formatting.sqlfmt,
-		-- diagnostics.eslint,
 	},
 })

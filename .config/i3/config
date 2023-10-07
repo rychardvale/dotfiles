@@ -23,6 +23,7 @@ exec "xrandr --output DP-0 --mode 1920x1200 --rate 144"
 
 # Keyboard repeat rate
 exec "xset r rate 200 25"
+exec "xset s off"
 
 # i3 BG
 exec --no-startup-id feh --bg-fill -Z -z ~/bg/
@@ -71,6 +72,8 @@ floating_modifier $mod
 
 # start a terminal
 bindsym $mod+Return exec kitty
+
+bindsym $mod+p move workspace to output right
 
 # kill focused window
 bindsym $mod+Shift+q kill

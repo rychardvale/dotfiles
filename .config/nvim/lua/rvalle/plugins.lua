@@ -19,9 +19,6 @@ require("lazy").setup({
 	},
 	{
 		"nvim-treesitter/nvim-treesitter-context",
-		config = function()
-			require("treesitter-context").setup()
-		end,
 	},
 
 	"nvim-telescope/telescope.nvim",
@@ -62,17 +59,11 @@ require("lazy").setup({
 	"NvChad/nvim-colorizer.lua",
 	{
 		"windwp/nvim-autopairs",
-		config = function()
-			require("nvim-autopairs").setup()
-		end,
 	},
 
 	{
 		"folke/trouble.nvim",
 		dependencies = { "kyazdani42/nvim-web-devicons" },
-		config = function()
-			require("trouble").setup()
-		end,
 	},
 
 	{
@@ -82,9 +73,6 @@ require("lazy").setup({
 
 	{
 		"j-hui/fidget.nvim",
-		config = function()
-			require("fidget").setup()
-		end,
 	},
 
 	"kyazdani42/nvim-web-devicons",
@@ -99,26 +87,12 @@ require("lazy").setup({
 	"jose-elias-alvarez/typescript.nvim",
 	{
 		"windwp/nvim-ts-autotag",
-		config = function()
-			require("nvim-ts-autotag").setup()
-		end,
 	},
 	"numToStr/Comment.nvim",
 	"JoosepAlviste/nvim-ts-context-commentstring",
 	{
 		"lewis6991/gitsigns.nvim",
 		dependencies = { "nvim-lua/plenary.nvim" },
-		config = function()
-			require("gitsigns").setup({
-				on_attach = function(bufnr)
-					local function map(mode, lhs, rhs, opts)
-						opts = vim.tbl_extend("force", { noremap = true, silent = true }, opts or {})
-						vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, opts)
-					end
-					map("n", "<leader>hD", '<cmd>lua require"gitsigns".diffthis("~")<CR>')
-				end,
-			})
-		end,
 	},
 	"tpope/vim-fugitive",
 	"ThePrimeagen/harpoon",
@@ -127,8 +101,5 @@ require("lazy").setup({
 
 	-- Themmes
 	"folke/tokyonight.nvim",
-	"ellisonleao/gruvbox.nvim",
-	"sainnhe/gruvbox-material",
-	"rebelot/kanagawa.nvim",
-	"catppuccin/nvim",
+	"Mofiqul/dracula.nvim",
 })

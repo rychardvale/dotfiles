@@ -1,0 +1,23 @@
+- name: Setup Vscole
+  hosts: localhost
+  gather_facts: yes
+  connection: local
+  tasks:
+    - name: Install for Fedora
+      when: ansible_facts['distribution'] == 'Fedora'
+      block: 
+        - name: Remove old docker binaries
+          become: yes
+
+    - name: Get code latest version
+      uri:
+        url: https://go.dev/VERSION?m=text
+        return_content: true
+      register: goversion
+
+    - name: Installing golang {{ goversion.content }}
+      become: yes
+      unarchive:
+        src: https://go.dev/dl/{{ goversion.content }}.linux-amd64.tar.gz
+        dest: /usr/local
+        remote_src: yes

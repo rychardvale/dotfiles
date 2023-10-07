@@ -50,7 +50,7 @@ nd() {
 
 # changes dir with fzf
 fdir() {
-	dir=$(fd --exclude 'node_modules' -t d . ${1:-.} 2> /dev/null | fzf +m);
+	dir=$(find ${1:-.} -type d | fzf +m);
 	cd $dir
 }
 
@@ -129,8 +129,8 @@ fh() {
 }
 
 tm() {
-	selected=$(fd --exclude 'node_modules' -t d . ${1:-.} 2> /dev/null | fzf);
-	selected_name=$(echo "$selected" | sed 's/\.//g')
+	selected=$(find ~/work ~/personal ~/personal/learning -maxdepth 1 -mindepth 1 -type d | fzf);
+	selected_name=$(basename $selected | tr . _ )
 
 	tmux_running=$(pgrep tmux)
 
@@ -147,7 +147,19 @@ tm() {
 		tmux new-session -ds $selected_name -c $selected
 	fi
 
+	echo $selected_name
 	tmux switch-client -t $selected_name
+}
+
+tml() {
+	session=$(tmux ls -F "#{session_name}" | fzf +m)
+	echo $session
+	if [[ -z $session ]] then
+		return;
+		exit 0;
+	fi
+
+	tmux switch-client -t $session
 }
 
 tmk() {
